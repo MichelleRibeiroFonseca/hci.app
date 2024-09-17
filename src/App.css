@@ -36,3 +36,6 @@
     transform: rotate(360deg);
   }
 }
+.menu {
+  background-color: rgb(153, 51, 56);
+}

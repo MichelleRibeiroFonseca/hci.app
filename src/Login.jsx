@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
-function Login() {
+import logo from "./logo_hci.jpg";
+function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -8,12 +8,16 @@ function Login() {
     event.preventDefault();
     console.log("Username:", username);
     console.log("Password:", password);
-    // Adicione a lógica de autenticação aqui
+    if (username === "admin" && password === "123") {
+      onLogin();
+    } else {
+      alert("Login inválido");
+    }
   };
 
   return (
     <div className="login-container">
-      {/* <h2>Login</h2> */}
+      <img src={logo} className="App-logo" alt="logo" />
       <p></p>
       <form onSubmit={handleSubmit}>
         <div>
