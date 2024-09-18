@@ -18,11 +18,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <Menu /> */}
+        {}
 
         {isAuthenticated ? (
           <BrowserRouter>
             <Routes>
+              {/* <Route path="/" Component={Menu}></Route> */}
               <Route path="/" Component={MainPage}></Route>
               <Route path="/clientes" Component={ClientesPage}></Route>
               <Route path="/produtos" Component={ProdutosPage}></Route>

@@ -8,7 +8,7 @@ import Error from "../components/telas/Error";
 import Sucesso from "../components/telas/Sucesso";
 import Loading from "../components/telas/Loading";
 import Mensagem from "../components/telas/Mensagem";
-// import { getCEP } from "../services/apiService";
+import { getCEP } from "../service/apiService";
 
 import {
   MdArrowBackIos,
@@ -48,6 +48,47 @@ export default function ClientesPage() {
   const [openModalAgenda, setOpenModalAgenda] = useState(false);
   const [clienteSelected, setClienteSelect] = useState();
   const [isOpenMensagem, setIsOpenMensagem] = useState(false);
+
+  useEffect(() => {
+    if (CEP && CEP.length === 9 && CEP !== CEPAtual) {
+      async function obterCEP() {
+        try {
+          setIsProcessing(true);
+          const listaCEP = await getCEP(CEP);
+          if (!listaCEP.erro) {
+            setLogradouro(listaCEP.logradouro);
+            setBairro(listaCEP.bairro);
+            setUf(listaCEP.uf);
+            setCidade(listaCEP.localidade);
+            setCEPAtual(CEP);
+          } else {
+            setLogradouro("");
+            setBairro("");
+            setUf("");
+            setCidade("");
+          }
+          setIsProcessing(false);
+        } catch {
+          setIsProcessing(false);
+        }
+      }
+      obterCEP();
+    }
+  }, [CEP, CEPAtual]);
+
+  async function handleBuscar() {
+    setErroGeral("");
+    try {
+      setIsProcessing(true);
+      const listaClientesFiltro = await getClientes(nomeFiltro);
+      setListaClientes(listaClientesFiltro);
+      setKey(key + 1);
+      setIsProcessing(false);
+    } catch (erro) {
+      setIsProcessing(false);
+      setErroGeral(erro.message);
+    }
+  }
 
   async function handleBuscar() {
     setErroGeral("");
@@ -253,8 +294,67 @@ export default function ClientesPage() {
               allowNull={true}
             />
           </div>
+          <div className="w-32 text-left">
+            <TextInput
+              labelDescription="Número"
+              inputValue={numero}
+              onInputChange={(valor) => setNumero(valor)}
+              validado={validado}
+              maxLength={10}
+              allowNull={true}
+            />
+          </div>
+          <div className="col-span-1">
+            <TextInput
+              labelDescription="Complemento"
+              inputValue={complemento}
+              onInputChange={(valor) => setComplemento(valor)}
+              validado={validado}
+              maxLength={50}
+              allowNull={true}
+            />
+          </div>
 
-          {/* Continue adicionando mais campos da mesma forma */}
+          <div className="col-span-1">
+            <TextInput
+              labelDescription="Bairro"
+              inputValue={bairro}
+              onInputChange={(valor) => setBairro(valor)}
+              validado={validado}
+              maxLength={50}
+              disabled={true}
+              allowNull={true}
+            />
+          </div>
+          <div className="flex-1 text-left">
+            <TextInput
+              labelDescription="Cidade"
+              inputValue={cidade}
+              onInputChange={(valor) => setCidade(valor)}
+              validado={validado}
+              maxLength={50}
+              disabled={true}
+              allowNull={true}
+            />
+          </div>
+          <div className="col-span-1">
+            <TextInput
+              labelDescription="Estado"
+              inputValue={uf}
+              onInputChange={(valor) => setUf(valor)}
+              validado={validado}
+              maxLength={50}
+              disabled={true}
+              allowNull={true}
+            />
+          </div>
+        </div>
+
+        <p className="flex-1"></p>
+        <div className="flex-1">
+          <Button colorClass="bg-green-700 w-32" onButtonClick={handleSalvar}>
+            SALVAR
+          </Button>
         </div>
       </ModalEdicao>
     </>
