@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://api-infinity-pilates.onrender.com/";
+const BASE_URL = "https://hci-api.onrender.com/";
 // process.env.NODE_ENV === 'development'
 //   ? 'https://api-infinity-pilates.onrender.com/'
 //   : 'https://api-infinity-pilates.onrender.com/';

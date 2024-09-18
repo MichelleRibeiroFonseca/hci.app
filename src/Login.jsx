@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import logo from "./logo_hci.jpg";
+import TextInput from "./components/controles/TextInput";
 function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("123");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,20 +23,28 @@ function Login({ onLogin }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Login:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+          <TextInput
+            // type="text"
+            // id="username"
+            // value={username}
+            // onChange={(e) => setUsername(e.target.value)}
+            labelDescription="Login"
+            inputValue={username}
+            autoFocus
+            onInputChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div>
           <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+          <TextInput
+            // type="password"
+            // id="password"
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+            labelDescription="Senha"
+            inputValue={password}
+            autoFocus
+            onInputChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <button type="submit">Login</button>

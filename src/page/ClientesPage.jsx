@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import TextInput from "../components/controles/TextInput";
 import Button from "../components/controles/Button";
 // import Header from "../components/telas/Header";
-// import ItemLista from "../components/telas/ItemLista";
+import ItemLista from "../components/telas/ItemLista";
 import ModalEdicao from "../components/telas/ModalEdicao";
 import Error from "../components/telas/Error";
 import Sucesso from "../components/telas/Sucesso";
 import Loading from "../components/telas/Loading";
 import Mensagem from "../components/telas/Mensagem";
 import { getCEP } from "../service/apiService";
-
+import Container from "../components/Container";
+import { useCliente } from "../hook/useCliente";
 import {
   MdArrowBackIos,
   MdSave,
@@ -18,7 +19,8 @@ import {
 } from "react-icons/md";
 
 export default function ClientesPage() {
-  const { getClientes, updateCliente, addCliente, solicitarSenhaCliente } = ""; //useCliente();
+  const { getClientes, updateCliente, addCliente, solicitarSenhaCliente } =
+    useCliente();
 
   const [nomeFiltro, setNomeFiltro] = useState("");
 
@@ -76,6 +78,27 @@ export default function ClientesPage() {
     }
   }, [CEP, CEPAtual]);
 
+  function handleItemClick(index) {
+    const itemSelected = listaClientes[index];
+    limparDados();
+
+    setClienteSelect(itemSelected);
+    setNome(itemSelected.nome);
+    setEmail(itemSelected.email);
+    setTelefone(itemSelected.celular);
+    setCpf(itemSelected.CPF);
+    setLogradouro(itemSelected.logradouro);
+    setCEP(itemSelected.CEP);
+    setNumero(itemSelected.numero);
+    setComplemento(itemSelected.complemento);
+    setCidade(itemSelected.cidade);
+    setBairro(itemSelected.bairro);
+    setUf(itemSelected.uf);
+    setCEPAtual(itemSelected.CEP);
+    setIdCliente(itemSelected.id_cliente);
+    setOpenModal(true);
+  }
+
   async function handleBuscar() {
     setErroGeral("");
     try {
@@ -94,7 +117,7 @@ export default function ClientesPage() {
     setErroGeral("");
     try {
       setIsProcessing(true);
-      const listaClientesFiltro = ""; //await getClientes(nomeFiltro);
+      const listaClientesFiltro = await getClientes(nomeFiltro);
       setListaClientes(listaClientesFiltro);
       setKey(key + 1);
       setIsProcessing(false);
@@ -131,16 +154,18 @@ export default function ClientesPage() {
     handleBuscar();
   }
   async function handleSalvar() {
+    debugger;
     setErroMensage("");
     setIsProcessing(true);
     if (dadosValidos()) {
       const cliente = {
-        nome: nome,
-        cpf: cpf,
+        nome_cliente: nome,
         email: email,
-        celular: telefone,
-        CEP: CEP,
-        logradouro: logradouro,
+        telefone: telefone,
+        documento: cpf,
+        contato: "Teste",
+        cep: CEP,
+        endereco: logradouro,
         numero: numero,
         complemento: complemento,
         cidade: cidade,
@@ -169,6 +194,7 @@ export default function ClientesPage() {
   }
 
   function processaRetorno(retorno) {
+    debugger;
     setIsProcessing(false);
     if (!retorno.sucesso) setErroMensage(retorno.mensagem);
     else {
@@ -202,161 +228,282 @@ export default function ClientesPage() {
       //telefone.trim().length === 15
     );
   }
+
+  function handleCloseMensagem() {
+    setIsOpenMensagem(false);
+    setOpenModal(true);
+    setKey(key + 1);
+  }
+
   return (
     <>
-      {/* <Header submenu="Clientes"></Header> */}
-      {
-        <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
-      }
-      <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
-        <TextInput
-          labelDescription="Nome"
-          inputValue={nomeFiltro}
-          autoFocus
-          onInputChange={(valor) => setNomeFiltro(valor)}
+      <Container>
+        {isProcessing && <Loading />}
+        <Error>{erroGeral}</Error>
+
+        {/* <ModalEdicao
+        titulo="AGENDA CLIENTE"
+        isOpenEdicao={isOpenMensagem}
+      ></ModalEdicao> */}
+        <Mensagem
+          key={key}
+          mensagem={"Confirma a solicitação da senha?"}
+          closeFunction={handleCloseMensagem}
+          openModal={isOpenMensagem}
+          textButton={"Confirmar"}
         />
-        <Button
-          colorClass="bg-blue-600 w-30 md:w-40"
-          onButtonClick={handleBuscar}
-        >
-          Buscar
-        </Button>
-        <Button
-          colorClass="bg-green-600 w-30 md:w-40"
-          onButtonClick={handleNovo}
-        >
-          Novo Cliente
-        </Button>
-      </div>
-      <ModalEdicao titulo="Cadastro de Cliente" isOpenEdicao={openModal}>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Nome"
-              inputValue={nome}
-              autoFocus
-              onInputChange={(valor) => setNome(valor)}
-              validado={validado}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="CPF"
-              isCPF={true}
-              inputValue={cpf}
-              onInputChange={(valor) => setCpf(valor)}
-              validado={validado}
-              maxLength={14}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="E-mail"
-              inputValue={email}
-              onInputChange={(valor) => setEmail(valor)}
-              validado={validado}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Telefone"
-              inputValue={telefone}
-              onInputChange={(valor) => setTelefone(valor)}
-              validado={validado}
-              maxLength={15}
-              isCelular={true}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="CEP"
-              inputValue={CEP}
-              onInputChange={(valor) => setCEP(valor)}
-              validado={validado}
-              maxLength={9}
-              allowNull={true}
-              isCEP={true}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Logradouro"
-              inputValue={logradouro}
-              onInputChange={(valor) => setLogradouro(valor)}
-              validado={validado}
-              maxLength={100}
-              disabled={true}
-              allowNull={true}
-            />
-          </div>
-          <div className="w-32 text-left">
-            <TextInput
-              labelDescription="Número"
-              inputValue={numero}
-              onInputChange={(valor) => setNumero(valor)}
-              validado={validado}
-              maxLength={10}
-              allowNull={true}
-            />
-          </div>
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Complemento"
-              inputValue={complemento}
-              onInputChange={(valor) => setComplemento(valor)}
-              validado={validado}
-              maxLength={50}
-              allowNull={true}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Bairro"
-              inputValue={bairro}
-              onInputChange={(valor) => setBairro(valor)}
-              validado={validado}
-              maxLength={50}
-              disabled={true}
-              allowNull={true}
-            />
-          </div>
-          <div className="flex-1 text-left">
-            <TextInput
-              labelDescription="Cidade"
-              inputValue={cidade}
-              onInputChange={(valor) => setCidade(valor)}
-              validado={validado}
-              maxLength={50}
-              disabled={true}
-              allowNull={true}
-            />
-          </div>
-          <div className="col-span-1">
-            <TextInput
-              labelDescription="Estado"
-              inputValue={uf}
-              onInputChange={(valor) => setUf(valor)}
-              validado={validado}
-              maxLength={50}
-              disabled={true}
-              allowNull={true}
-            />
-          </div>
-        </div>
-
-        <p className="flex-1"></p>
-        <div className="flex-1">
-          <Button colorClass="bg-green-700 w-32" onButtonClick={handleSalvar}>
-            SALVAR
+        {/* <Header submenu="Clientes"></Header> */}
+        {
+          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
+        }
+        <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
+          <TextInput
+            labelDescription="Nome"
+            inputValue={nomeFiltro}
+            autoFocus
+            onInputChange={(valor) => setNomeFiltro(valor)}
+          />
+          <Button
+            colorClass="bg-blue-600 w-30 md:w-40"
+            onButtonClick={handleBuscar}
+          >
+            Buscar
+          </Button>
+          <Button
+            colorClass="bg-green-600 w-30 md:w-40"
+            onButtonClick={handleNovo}
+          >
+            Novo Cliente
           </Button>
         </div>
-      </ModalEdicao>
+        <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
+        <div style={{ height: "50px" }}></div>
+        <div className="w-full">
+          {listaClientes.map((cliente, index) => {
+            return (
+              <ItemLista key={index} onItemClick={handleItemClick} item={index}>
+                <div className="flex">
+                  <div className="flex-1">
+                    <p>{cliente.nome_cliente}</p>
+                    <p className="md:hidden flex">{cliente.email}</p>
+                    <p className="md:hidden flex">{cliente.telefone}</p>
+                  </div>
+
+                  <div className="hidden md:flex w-60">{cliente.email}</div>
+                  <div className="hidden md:flex w-60">{cliente.telefone}</div>
+                </div>
+              </ItemLista>
+            );
+          })}
+        </div>
+        <ModalEdicao titulo="Cadastro de Cliente" isOpenEdicao={openModal}>
+          <div className="p-3">
+            <div className="container shadow-lg shadow-black rounded-xl mt-5 border-2 md:p-6 p-3 border-gray-600 text-center">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Nome"
+                    inputValue={nome}
+                    autoFocus
+                    onInputChange={(valor) => setNome(valor)}
+                    validado={validado}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="CPF"
+                    isCPF={true}
+                    inputValue={cpf}
+                    onInputChange={(valor) => setCpf(valor)}
+                    validado={validado}
+                    maxLength={14}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="E-mail"
+                    inputValue={email}
+                    onInputChange={(valor) => setEmail(valor)}
+                    validado={validado}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Telefone"
+                    inputValue={telefone}
+                    onInputChange={(valor) => setTelefone(valor)}
+                    validado={validado}
+                    maxLength={15}
+                    isCelular={true}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="CEP"
+                    inputValue={CEP}
+                    onInputChange={(valor) => setCEP(valor)}
+                    validado={validado}
+                    maxLength={9}
+                    allowNull={true}
+                    isCEP={true}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Logradouro"
+                    inputValue={logradouro}
+                    onInputChange={(valor) => setLogradouro(valor)}
+                    validado={validado}
+                    maxLength={100}
+                    disabled={true}
+                    allowNull={true}
+                  />
+                </div>
+                <div className="w-32 text-left">
+                  <TextInput
+                    labelDescription="Número"
+                    inputValue={numero}
+                    onInputChange={(valor) => setNumero(valor)}
+                    validado={validado}
+                    maxLength={10}
+                    allowNull={true}
+                  />
+                </div>
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Complemento"
+                    inputValue={complemento}
+                    onInputChange={(valor) => setComplemento(valor)}
+                    validado={validado}
+                    maxLength={50}
+                    allowNull={true}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Bairro"
+                    inputValue={bairro}
+                    onInputChange={(valor) => setBairro(valor)}
+                    validado={validado}
+                    maxLength={50}
+                    disabled={true}
+                    allowNull={true}
+                  />
+                </div>
+                <div className="flex-1 text-left">
+                  <TextInput
+                    labelDescription="Cidade"
+                    inputValue={cidade}
+                    onInputChange={(valor) => setCidade(valor)}
+                    validado={validado}
+                    maxLength={50}
+                    disabled={true}
+                    allowNull={true}
+                  />
+                </div>
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Estado"
+                    inputValue={uf}
+                    onInputChange={(valor) => setUf(valor)}
+                    validado={validado}
+                    maxLength={50}
+                    disabled={true}
+                    allowNull={true}
+                  />
+                </div>
+              </div>
+
+              {!isProcessing && (
+                <>
+                  <div className="flex md:hidden">
+                    <div>
+                      <Button
+                        colorClass="bg-red-700"
+                        onButtonClick={handleCancelar}
+                      >
+                        <MdArrowBackIos />
+                      </Button>
+                    </div>
+                    <div className="flex-1">
+                      {idCliente > 0 && (
+                        <>
+                          <Button
+                            colorClass="bg-blue-700"
+                            onButtonClick={handleSolicitarSenha}
+                          >
+                            <MdOutlinePassword />
+                          </Button>
+
+                          <Button
+                            colorClass="bg-blue-700"
+                            onButtonClick={handleAgenda}
+                          >
+                            <MdSchedule />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      <Button
+                        colorClass="bg-green-700"
+                        onButtonClick={handleSalvar}
+                      >
+                        <MdSave />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="hidden md:flex">
+                    <Button
+                      colorClass="bg-red-700 w-32"
+                      onButtonClick={handleCancelar}
+                    >
+                      CANCELAR
+                    </Button>
+
+                    {/* {idCliente > 0 && (
+                    <>
+                      <Button
+                        colorClass="bg-blue-700 w-64"
+                        onButtonClick={handleSolicitarSenha}
+                      >
+                        SOLICITAR SENHA
+                      </Button>
+
+                      <Button
+                        colorClass="bg-blue-700 w-64"
+                        onButtonClick={handleAgenda}
+                      >
+                        AGENDA
+                      </Button>
+                    </>
+                  )} */}
+
+                    <Button
+                      colorClass="bg-green-700 w-32"
+                      onButtonClick={handleSalvar}
+                    >
+                      SALVAR
+                    </Button>
+                  </div>
+                </>
+              )}
+              {isProcessing && <Loading />}
+              <div>
+                <Error>{erroMensage}</Error>
+                <Sucesso callback={handleFecharModal}>{mensageSucesso}</Sucesso>
+              </div>
+            </div>
+          </div>
+        </ModalEdicao>
+      </Container>
     </>
   );
 }

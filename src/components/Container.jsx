@@ -37,9 +37,15 @@ export default function Container(props) {
           margin: "10px 20px",
           textAlign: "center",
           fontFamily: "Arial Black",
+          width: "90%",
         }}
       >
-        {props.children}
+        <div style={{ height: "100px" }}></div>
+        <div className="flex-1" style={{ color: "black" }}>
+          Gestão de Orçamentos
+        </div>
+
+        <div className="mt-10">{props.children}</div>
       </div>
 
       {/* Logo */}

@@ -5,8 +5,8 @@ import {
   getMonth,
   getPeriodo,
   getYear,
-} from "../Utils/date";
-import * as serviceCliente from "../services/serviceCliente";
+} from "../Util/date";
+import * as serviceCliente from "../service/serviceCliente";
 
 export function useCliente() {
   async function getClientes(filtroNome) {
