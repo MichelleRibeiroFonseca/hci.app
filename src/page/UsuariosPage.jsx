@@ -42,9 +42,9 @@ export default function UsuariosPage() {
     limparDados();
 
     setClienteSelect(itemSelected);
-    setNome(itemSelected.nome);
+    setNome(itemSelected.nome_usuario);
     setSenha(itemSelected.senha);
-    setIdUsuario(itemSelected.idUsuario);
+    setIdUsuario(itemSelected.id_usuario);
     setOpenModal(true);
   }
 
@@ -256,17 +256,18 @@ export default function UsuariosPage() {
                     allowNull={false}
                   />
                 </div>
-
-                <div className="col-span-1">
-                  <TextInput
-                    labelDescription="Senha"
-                    inputValue={senha}
-                    onInputChange={(valor) => setSenha(valor)}
-                    validado={validado}
-                    maxLength={14}
-                    allowNull={false}
-                  />
-                </div>
+                {idUsuario == 0 && (
+                  <div className="col-span-1">
+                    <TextInput
+                      labelDescription="Senha"
+                      inputValue={senha}
+                      onInputChange={(valor) => setSenha(valor)}
+                      validado={validado}
+                      maxLength={14}
+                      allowNull={false}
+                    />
+                  </div>
+                )}
               </div>
 
               {!isProcessing && (
