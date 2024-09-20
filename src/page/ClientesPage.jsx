@@ -19,8 +19,13 @@ import {
 } from "react-icons/md";
 
 export default function ClientesPage() {
-  const { getClientes, updateCliente, addCliente, solicitarSenhaCliente } =
-    useCliente();
+  const {
+    getClientes,
+    updateCliente,
+    addCliente,
+    solicitarSenhaCliente,
+    excluirCliente,
+  } = useCliente();
 
   const [nomeFiltro, setNomeFiltro] = useState("");
 
@@ -83,18 +88,18 @@ export default function ClientesPage() {
     limparDados();
 
     setClienteSelect(itemSelected);
-    setNome(itemSelected.nome);
+    setNome(itemSelected.nome_cliente);
     setEmail(itemSelected.email);
-    setTelefone(itemSelected.celular);
-    setCpf(itemSelected.CPF);
-    setLogradouro(itemSelected.logradouro);
-    setCEP(itemSelected.CEP);
+    setTelefone(itemSelected.telefone);
+    setCpf(itemSelected.documento);
+    setLogradouro(itemSelected.endereco);
+    setCEP(itemSelected.cep);
     setNumero(itemSelected.numero);
     setComplemento(itemSelected.complemento);
     setCidade(itemSelected.cidade);
     setBairro(itemSelected.bairro);
     setUf(itemSelected.uf);
-    setCEPAtual(itemSelected.CEP);
+
     setIdCliente(itemSelected.id_cliente);
     setOpenModal(true);
   }
@@ -153,6 +158,25 @@ export default function ClientesPage() {
     setOpenModal(false);
     handleBuscar();
   }
+
+  async function handleExluir() {
+    setErroMensage("");
+    setIsProcessing(true);
+    const id_cliente = idCliente;
+    try {
+      if (idCliente > 0) {
+        debugger;
+        const retorno = await excluirCliente(id_cliente);
+
+        processaRetorno(retorno);
+      }
+    } catch (erro) {
+      setIsProcessing(false);
+
+      setErroMensage(erro.message);
+    }
+  }
+
   async function handleSalvar() {
     debugger;
     setErroMensage("");
@@ -284,13 +308,19 @@ export default function ClientesPage() {
               <ItemLista key={index} onItemClick={handleItemClick} item={index}>
                 <div className="flex">
                   <div className="flex-1">
-                    <p>{cliente.nome_cliente}</p>
-                    <p className="md:hidden flex">{cliente.email}</p>
-                    <p className="md:hidden flex">{cliente.telefone}</p>
+                    <p className="text-sm">{cliente.nome_cliente}</p>
+                    <p className="md:hidden flex-1 text-sm">{cliente.email}</p>
+                    <p className="md:hidden flex-1 text-sm">
+                      {cliente.telefone}
+                    </p>
                   </div>
 
-                  <div className="hidden md:flex w-60">{cliente.email}</div>
-                  <div className="hidden md:flex w-60">{cliente.telefone}</div>
+                  <div className="hidden md:flex w-60 text-sm">
+                    {cliente.email}
+                  </div>
+                  <div className="hidden md:flex w-60 text-sm">
+                    {cliente.telefone}
+                  </div>
                 </div>
               </ItemLista>
             );
@@ -431,25 +461,7 @@ export default function ClientesPage() {
                         <MdArrowBackIos />
                       </Button>
                     </div>
-                    <div className="flex-1">
-                      {idCliente > 0 && (
-                        <>
-                          <Button
-                            colorClass="bg-blue-700"
-                            onButtonClick={handleSolicitarSenha}
-                          >
-                            <MdOutlinePassword />
-                          </Button>
-
-                          <Button
-                            colorClass="bg-blue-700"
-                            onButtonClick={handleAgenda}
-                          >
-                            <MdSchedule />
-                          </Button>
-                        </>
-                      )}
-                    </div>
+                    <div className="flex-1"></div>
                     <div>
                       <Button
                         colorClass="bg-green-700"
@@ -467,6 +479,14 @@ export default function ClientesPage() {
                     >
                       CANCELAR
                     </Button>
+                    {idCliente > 0 && (
+                      <Button
+                        colorClass="bg-red-700 w-32"
+                        onButtonClick={handleExluir}
+                      >
+                        Excluir
+                      </Button>
+                    )}
 
                     {/* {idCliente > 0 && (
                     <>

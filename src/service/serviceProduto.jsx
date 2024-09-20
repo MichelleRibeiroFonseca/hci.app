@@ -1,17 +1,17 @@
-import { _post, _get, _put } from "./httpService";
+import { _post, _get, _put, _delete } from "./httpService";
 
 export async function getByDescricao(nome) {
   try {
-    const retorno = await _get(`/cliente/ByNome/${nome}`);
+    const retorno = await _get(`/produto/byfilter/${nome}`);
     return retorno;
   } catch (erro) {
     throw erro;
   }
 }
 
-export async function getById(id_cliente) {
+export async function getById(id_Produto) {
   try {
-    const retorno = await _get(`/cliente/ById/${id_cliente}`);
+    const retorno = await _get(`/produto/ById/${id_Produto}`);
     return retorno;
   } catch (erro) {
     throw erro;
@@ -19,7 +19,7 @@ export async function getById(id_cliente) {
 }
 export async function getAll() {
   try {
-    const retorno = await _get(`/cliente`);
+    const retorno = await _get(`/produto`);
     return retorno;
   } catch (erro) {
     throw erro;
@@ -29,7 +29,17 @@ export async function getAll() {
 export async function addProduto(data) {
   try {
     debugger;
-    const retorno = await _post("/cliente", data);
+    const retorno = await _post("/produto", data);
+    return retorno;
+  } catch (erro) {
+    throw erro;
+  }
+}
+
+export async function deteProduto(id) {
+  try {
+    debugger;
+    const retorno = await _delete("/produto", id);
     return retorno;
   } catch (erro) {
     throw erro;
@@ -38,7 +48,7 @@ export async function addProduto(data) {
 
 export async function updateProduto(data) {
   try {
-    const retorno = await _put("/cliente", data);
+    const retorno = await _put("/produto", data);
     return retorno;
   } catch (erro) {
     throw erro;

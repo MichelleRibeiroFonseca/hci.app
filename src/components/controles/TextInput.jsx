@@ -1,5 +1,5 @@
 // import { getNewId } from "../../services/idService";
-import { maskCPF, maskCEP, maskCelular } from "../../Util/mascara";
+import { maskCPF, maskCEP, maskCelular, maskValor } from "../../Util/mascara";
 
 export default function TextInput({
   labelDescription = "Descrição do Label",
@@ -17,21 +17,36 @@ export default function TextInput({
   isCPF = false,
   isCEP = false,
   isCelular = false,
+  isValor = false,
+  isNumero = false,
   exibirMobile = true,
 }) {
   function handleInputChange({ currentTarget }) {
-    if (isCPF) {
-      currentTarget.value = maskCPF(currentTarget.value);
-    }
-    if (isCEP) {
-      currentTarget.value = maskCEP(currentTarget.value);
-    }
-    if (isCelular) {
-      currentTarget.value = maskCelular(currentTarget.value);
+    let newValue = currentTarget.value;
+
+    // Aplicar a máscara de número se isNumero for verdadeiro
+    if (isNumero) {
+      newValue = newValue.replace(/\D/g, ""); // Remove não dígitos
     }
 
+    // Aplicar as outras máscaras
+    if (isCPF) {
+      newValue = maskCPF(newValue);
+    }
+    if (isCEP) {
+      newValue = maskCEP(newValue);
+    }
+    if (isCelular) {
+      newValue = maskCelular(newValue);
+    }
+    if (isValor) {
+      newValue = maskValor(newValue);
+    }
+
+    // Atualiza o campo e chama onInputChange
+    currentTarget.value = newValue;
+
     if (onInputChange) {
-      const newValue = currentTarget.value;
       onInputChange(newValue);
     }
   }

@@ -20,6 +20,15 @@ export function useUsuario() {
     }
   }
 
+  async function getUsuarios() {
+    try {
+      const listaClientesFiltro = await serviceUsuario.getAll();
+      return listaClientesFiltro;
+    } catch (erro) {
+      throw Error(erro.message);
+    }
+  }
+
   async function addUsuario(data) {
     try {
       const retorno = await serviceUsuario.addUsuario(data);

@@ -18,3 +18,12 @@ export async function addUsuario(data) {
     throw erro;
   }
 }
+
+export async function getAll() {
+  try {
+    const retorno = await _get(`/usuario`);
+    return retorno;
+  } catch (erro) {
+    throw erro;
+  }
+}

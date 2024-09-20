@@ -29,6 +29,7 @@ export default function ProdutosPage() {
   const [listaProdutos, setListaProdutos] = useState([]);
   const [key, setKey] = useState(0);
   const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [valorCusto, setValorCusto] = useState("");
   const [valorVenda, setValorVenda] = useState("");
   const [fornecedor, setFornecedor] = useState("");
@@ -49,16 +50,16 @@ export default function ProdutosPage() {
     limparDados();
 
     setClienteSelect(itemSelected);
-    setNome(itemSelected.nome);
-    setValorVenda(itemSelected.valorVenda);
-    setValorCusto(itemSelected.valorCusto);
+    setDescricao(itemSelected.descricao);
+    setValorVenda(itemSelected.valor_venda);
+    setValorCusto(itemSelected.valor_custo);
     setFornecedor(itemSelected.fornecedor);
     setQuantidade(itemSelected.quantidade);
     setUnidade(itemSelected.unidade);
     setDimensao(itemSelected.dimensao);
     setPeso(itemSelected.peso);
     setEan(itemSelected.ean);
-    setIdProduto(itemSelected.idProduto);
+    setIdProduto(itemSelected.id_produto);
     setOpenModal(true);
   }
 
@@ -97,6 +98,7 @@ export default function ProdutosPage() {
   function limparDados() {
     setValidado(false);
     setNome("");
+    setDescricao("");
     setValorVenda("");
     setValorCusto("");
     setFornecedor("");
@@ -120,16 +122,16 @@ export default function ProdutosPage() {
     setIsProcessing(true);
     if (dadosValidos()) {
       const produto = {
-        nome_cliente: nome,
-        valorVenda: valorVenda,
-        valorCusto: valorCusto,
+        descricao: descricao,
+        valor_venda: valorVenda,
+        valor_custo: valorCusto,
         fornecedor: fornecedor,
         quantidade: quantidade,
         unidade: unidade,
         dimensao: dimensao,
         peso: peso,
         ean: ean,
-        idProduto: idProduto,
+        id_Produto: idProduto,
       };
       try {
         if (idProduto > 0) {
@@ -179,12 +181,12 @@ export default function ProdutosPage() {
   function dadosValidos() {
     setValidado(true);
 
-    // return (
-    //   nome.trim().length > 5 &&
-    //   email.trim().length > 5 &&
-    //   cpf.trim().length === 14
-    //   //telefone.trim().length === 15
-    // );
+    return (
+      descricao.trim().length > 5
+      //   email.trim().length > 5 &&
+      //   cpf.trim().length === 14
+      //   //telefone.trim().length === 15
+    );
   }
 
   function handleCloseMensagem() {
@@ -232,18 +234,33 @@ export default function ProdutosPage() {
         <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
         <div style={{ height: "50px" }}></div>
         <div className="w-full">
-          {listaProdutos.map((cliente, index) => {
+          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-black">
+            <div className="flex-1 pl-2">Código</div>
+            <div className="w-60 pl-2">Descrição</div>
+            <div className="w-60 pl-2">Fornecedor</div>
+          </div>
+          {listaProdutos.map((produto, index) => {
             return (
               <ItemLista key={index} onItemClick={handleItemClick} item={index}>
                 <div className="flex">
-                  <div className="flex-1">
-                    <p>{cliente.nome_cliente}</p>
-                    <p className="md:hidden flex">{cliente.descricao}</p>
-                    <p className="md:hidden flex">{cliente.codigo}</p>
+                  <div className="flex-1 pl-2">
+                    <p className="text-sm">{produto.id_produto}</p>
+                    {/* Para dispositivos menores */}
+                    <p className="md:hidden flex text-sm">
+                      {produto.descricao}
+                    </p>
+                    <p className="md:hidden flex text-sm">
+                      {produto.fornecedor}
+                    </p>
                   </div>
 
-                  <div className="hidden md:flex w-60">{cliente.descricao}</div>
-                  <div className="hidden md:flex w-60">{cliente.codigo}</div>
+                  {/* Para dispositivos maiores */}
+                  <div className="hidden md:flex w-60 pl-2 text-sm">
+                    {produto.descricao}
+                  </div>
+                  <div className="hidden md:flex w-60 pl-2 text-sm">
+                    {produto.fornecedor}
+                  </div>
                 </div>
               </ItemLista>
             );
@@ -260,17 +277,17 @@ export default function ProdutosPage() {
                     autoFocus
                     onInputChange={(valor) => setIdProduto(valor)}
                     disabled={true}
-                    allowNull={true}
+                    allowNull={false}
                   />
                 </div>
 
                 <div className="col-span-1">
                   <TextInput
                     labelDescription="Descricao"
-                    inputValue={nome}
-                    onInputChange={(valor) => setNome(valor)}
+                    inputValue={descricao}
+                    onInputChange={(valor) => setDescricao(valor)}
                     validado={validado}
-                    maxLength={14}
+                    maxLength={150}
                     allowNull={false}
                   />
                 </div>
@@ -282,15 +299,17 @@ export default function ProdutosPage() {
                     onInputChange={(valor) => setValorVenda(valor)}
                     validado={validado}
                     allowNull={false}
+                    isValor={true}
                   />
                 </div>
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="Valor Venda"
+                    labelDescription="Valor Custo"
                     inputValue={valorCusto}
                     onInputChange={(valor) => setValorCusto(valor)}
                     validado={validado}
                     allowNull={false}
+                    isValor={true}
                   />
                 </div>
                 <div className="col-span-1">
@@ -309,8 +328,9 @@ export default function ProdutosPage() {
                     inputValue={quantidade}
                     onInputChange={(valor) => setQuantidade(valor)}
                     validado={validado}
-                    maxLength={15}
+                    maxLength={4}
                     allowNull={false}
+                    isNumero={true}
                   />
                 </div>
 

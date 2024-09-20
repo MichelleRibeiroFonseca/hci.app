@@ -26,7 +26,7 @@ export default function UsuariosPage() {
   const [mensageSucesso, setMensageSucesso] = useState("");
 
   const [isProcessing, setIsProcessing] = useState(false);
-  const [listaClientes, setListaClientes] = useState([]);
+  const [listaUsuario, setListaUsuarios] = useState([]);
   const [key, setKey] = useState(0);
   const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
@@ -38,7 +38,7 @@ export default function UsuariosPage() {
   const [isOpenMensagem, setIsOpenMensagem] = useState(false);
 
   function handleItemClick(index) {
-    const itemSelected = listaClientes[index];
+    const itemSelected = listaUsuario[index];
     limparDados();
 
     setClienteSelect(itemSelected);
@@ -52,8 +52,8 @@ export default function UsuariosPage() {
     setErroGeral("");
     try {
       setIsProcessing(true);
-      const listaClientesFiltro = await getUsuarios(nomeFiltro);
-      setListaClientes(listaClientesFiltro);
+      const listaUsuarioFiltro = await getUsuarios(nomeFiltro);
+      setListaUsuarios(listaUsuarioFiltro);
       setKey(key + 1);
       setIsProcessing(false);
     } catch (erro) {
@@ -66,8 +66,8 @@ export default function UsuariosPage() {
     setErroGeral("");
     try {
       setIsProcessing(true);
-      const listaClientesFiltro = await getUsuarios(nomeFiltro);
-      setListaClientes(listaClientesFiltro);
+      const listaUsuarioFiltro = await getUsuarios(nomeFiltro);
+      setListaUsuarios(listaUsuarioFiltro);
       setKey(key + 1);
       setIsProcessing(false);
     } catch (erro) {
@@ -99,11 +99,12 @@ export default function UsuariosPage() {
     setIsProcessing(true);
     if (dadosValidos()) {
       const cliente = {
-        nome_cliente: nome,
+        nome_usuario: nome,
         senha: senha,
-        idUsuario: idUsuario,
+        //idUsuario: idUsuario,
       };
       try {
+        debugger;
         // if (idUsuario > 0) {
         //   const retorno = await updateCliente(cliente);
         //   processaRetorno(retorno);
@@ -207,18 +208,24 @@ export default function UsuariosPage() {
         <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
         <div style={{ height: "50px" }}></div>
         <div className="w-full">
-          {listaClientes.map((cliente, index) => {
+          {listaUsuario.map((cliente, index) => {
             return (
               <ItemLista key={index} onItemClick={handleItemClick} item={index}>
                 <div className="flex">
                   <div className="flex-1">
-                    <p>{cliente.nome_cliente}</p>
-                    <p className="md:hidden flex">{cliente.nome}</p>
-                    <p className="md:hidden flex">{cliente.codigo}</p>
+                    <p className="text-sm">{cliente.id_usuario}</p>
+                    <p className="md:hidden flex text-sm">
+                      {cliente.nome_usuario}
+                    </p>
+                    <p className="md:hidden flex text-sm">{cliente.senha}</p>
                   </div>
 
-                  <div className="hidden md:flex w-60">{cliente.nome}</div>
-                  <div className="hidden md:flex w-60">{cliente.codigo}</div>
+                  <div className="hidden md:flex w-60 text-sm">
+                    {cliente.nome_usuario}
+                  </div>
+                  <div className="hidden md:flex w-60 text-sm">
+                    {cliente.id_usuario}
+                  </div>
                 </div>
               </ItemLista>
             );
@@ -236,6 +243,7 @@ export default function UsuariosPage() {
                     onInputChange={(valor) => setIdUsuario(valor)}
                     validado={validado}
                     disabled={true}
+                    allowNull={true}
                   />
                 </div>
                 <div className="col-span-1">
@@ -245,6 +253,7 @@ export default function UsuariosPage() {
                     autoFocus
                     onInputChange={(valor) => setNome(valor)}
                     validado={validado}
+                    allowNull={false}
                   />
                 </div>
 
@@ -255,6 +264,7 @@ export default function UsuariosPage() {
                     onInputChange={(valor) => setSenha(valor)}
                     validado={validado}
                     maxLength={14}
+                    allowNull={false}
                   />
                 </div>
               </div>

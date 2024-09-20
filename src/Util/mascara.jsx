@@ -18,6 +18,22 @@ export const maskCEP = (v) => {
   return v;
 };
 
+export const maskValor = (v) => {
+  // Remove caracteres não numéricos
+  v = v.replace(/\D/g, "");
+
+  // Converte para float e formata como moeda
+  if (v) {
+    v = (parseFloat(v) / 100).toFixed(2); // Divide por 100 para tratar centavos
+    v = v.replace(".", ","); // Substitui ponto por vírgula
+    // Adiciona separadores de milhar
+    v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return `R$ ${v}`; // Adiciona o símbolo de real
+  }
+
+  return "";
+};
+
 export const maskCelular = (v) => {
   v = v.replace(/\D/g, "");
 

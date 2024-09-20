@@ -1,4 +1,4 @@
-import { _post, _get, _put } from "./httpService";
+import { _post, _get, _put, _delete } from "./httpService";
 
 export async function getByNome(nome) {
   try {
@@ -68,6 +68,18 @@ export async function solicitarSenhaCliente(id_cliente) {
     const retorno = await _put("/cliente/limparSenha", data);
     return retorno;
   } catch (erro) {
+    throw erro;
+  }
+}
+
+export async function excluirCliente(id_cliente) {
+  try {
+    debugger;
+    var retorno = await _delete(`/cliente/${id_cliente}`);
+    retorno = { sucesso: true, mensagem: "Excluído com sucesso" };
+    return retorno;
+  } catch (erro) {
+    retorno = { sucesso: false, mensagem: "Erro ao Excluir" };
     throw erro;
   }
 }

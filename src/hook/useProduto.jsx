@@ -25,17 +25,17 @@ export function useProduto() {
     }
   }
 
-  async function updateProduto(cliente) {
+  async function updateProduto(produto) {
     try {
-      const retorno = await serviceProduto.updateProduto(cliente);
+      const retorno = await serviceProduto.updateProduto(produto);
       return retorno;
     } catch (erro) {
       throw Error(erro.message);
     }
   }
-  async function addProduto(cliente) {
+  async function addProduto(produto) {
     try {
-      const retorno = await serviceProduto.addProduto(cliente);
+      const retorno = await serviceProduto.addProduto(produto);
       return retorno;
     } catch (erro) {
       throw Error(erro.message);

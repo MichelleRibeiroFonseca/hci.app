@@ -67,6 +67,16 @@ export function useCliente() {
     }
   }
 
+  async function excluirCliente(id_cliente) {
+    try {
+      debugger;
+      const retorno = await serviceCliente.excluirCliente(id_cliente);
+      return retorno;
+    } catch (erro) {
+      throw Error(erro.message);
+    }
+  }
+
   return {
     getClientes,
     updateCliente,
@@ -74,5 +84,6 @@ export function useCliente() {
     cadastrarSenha,
     validarCheckIn,
     solicitarSenhaCliente,
+    excluirCliente,
   };
 }

@@ -27,7 +27,7 @@ function App() {
               <Route path="/" Component={MainPage}></Route>
               <Route path="/clientes" Component={ClientesPage}></Route>
               <Route path="/produtos" Component={ProdutosPage}></Route>
-              <Route path="/usuario" Component={UsuariosPage}></Route>
+              <Route path="/usuarios" Component={UsuariosPage}></Route>
             </Routes>
           </BrowserRouter>
         ) : (
