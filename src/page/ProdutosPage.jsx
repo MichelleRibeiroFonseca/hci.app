@@ -109,6 +109,7 @@ export default function ProdutosPage() {
     setEan("");
     setIdProduto(0);
     setClienteSelect();
+    setNomeFiltro("");
   }
 
   function handleFecharModal() {

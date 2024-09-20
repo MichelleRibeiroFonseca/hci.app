@@ -151,6 +151,7 @@ export default function ClientesPage() {
     setUf("");
     setIdCliente(0);
     setClienteSelect();
+    setNomeFiltro("");
   }
 
   function handleFecharModal() {

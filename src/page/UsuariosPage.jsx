@@ -86,6 +86,7 @@ export default function UsuariosPage() {
     setSenha("");
     setIdUsuario(0);
     setClienteSelect();
+    setNomeFiltro("");
   }
 
   function handleFecharModal() {
