@@ -235,11 +235,11 @@ export default function ProdutosPage() {
         <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
         <div style={{ height: "50px" }}></div>
         <div className="w-full">
-          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-black">
+          {/* <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-black">
             <div className="flex-1 pl-2">Código</div>
             <div className="w-60 pl-2">Descrição</div>
             <div className="w-60 pl-2">Fornecedor</div>
-          </div>
+          </div> */}
           {listaProdutos.map((produto, index) => {
             return (
               <ItemLista key={index} onItemClick={handleItemClick} item={index}>
