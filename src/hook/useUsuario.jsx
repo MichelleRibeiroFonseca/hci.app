@@ -9,9 +9,10 @@ import {
 import * as serviceUsuario from "../service/serviceUsuario";
 
 export function useUsuario() {
-  async function getUsuarios(data) {
+  async function validarLogins(data) {
     try {
       if (data) {
+        debugger;
         const listaClientesFiltro = await serviceUsuario.validarLogin(data);
         return listaClientesFiltro;
       }
@@ -41,5 +42,6 @@ export function useUsuario() {
   return {
     getUsuarios,
     addUsuario,
+    validarLogins,
   };
 }

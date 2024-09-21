@@ -1,8 +1,9 @@
 import { _post, _get, _put } from "./httpService";
 
 export async function validarLogin(data) {
+  debugger;
   try {
-    const retorno = await _get("/usuario/Login/", data);
+    const retorno = await _post("/usuario/login/", data);
     return retorno;
   } catch (erro) {
     throw erro;

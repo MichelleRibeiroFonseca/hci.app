@@ -302,7 +302,7 @@ export default function ProdutosPage() {
 
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="Descricao"
+                    labelDescription="Descrição"
                     inputValue={descricao}
                     onInputChange={(valor) => setDescricao(valor)}
                     validado={validado}

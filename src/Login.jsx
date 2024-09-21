@@ -5,7 +5,7 @@ import Button from "./components/controles/Button";
 import { useUsuario } from "./hook/useUsuario";
 
 function Login({ onLogin }) {
-  const { getUsuarios } = useUsuario();
+  const { getUsuarios, validarLogins } = useUsuario();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [erroGeral, setErroGeral] = useState("");
@@ -16,14 +16,14 @@ function Login({ onLogin }) {
     event.preventDefault();
     console.log("Username:", username);
     console.log("Password:", password);
-    if (username === "admin" && password === "123") {
-      onLogin();
-    } else {
-      await validarLogin(); // Chamando a função validar login no caso de erro
-    }
+
+    debugger;
+    await validarLogin();
   };
 
   async function validarLogin() {
+    debugger;
+    setIsProcessing(true);
     const data = {
       nome_usuario: username,
       senha: password,
@@ -31,15 +31,21 @@ function Login({ onLogin }) {
     setErroGeral("");
     try {
       setIsProcessing(true);
-      const listaClientesFiltro = await getUsuarios(data);
-      if (listaClientesFiltro.length === 0) {
-        setErroGeral("Nenhum usuário encontrado.");
-      } else {
+      if (username === "admin" && password === "123") {
         onLogin();
+      } else {
+        debugger;
+        const listaClientesFiltro = await validarLogins(data);
+        if (listaClientesFiltro.sucesso == false) {
+          setErroGeral("Usuário e/ou senha inválidos.");
+        } else {
+          onLogin();
+        }
       }
     } catch (erro) {
-      setIsProcessing(false);
       setErroGeral(erro.message);
+    } finally {
+      setIsProcessing(false); // Finaliza o processamento em ambos casos
     }
   }
 
@@ -91,6 +97,7 @@ function Login({ onLogin }) {
               padding: "10px",
               borderRadius: "5px",
             }}
+            required
           />
         </div>
         <div>
@@ -116,6 +123,7 @@ function Login({ onLogin }) {
         <Button colorClass="bg-green-700 w-32" type="submit">
           Entrar
         </Button>
+        {erroGeral && <div className="text-red-700 mt-4">{erroGeral}</div>}
       </form>
     </div>
   );
