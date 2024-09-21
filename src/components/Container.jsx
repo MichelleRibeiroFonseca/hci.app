@@ -3,6 +3,7 @@ import logo from "../logo_hci.jpg";
 import { useEffect } from "react";
 
 export default function Container(props) {
+  const { handleLogout } = props;
   useEffect(() => {
     // Adicionar o fundo branco ao body
     document.body.style.backgroundColor = "#fff";
@@ -47,14 +48,41 @@ export default function Container(props) {
 
         <div className="mt-10">{props.children}</div>
       </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px",
+        }}
+      >
+        {/* Logo */}
+        <div style={{ width: "auto" }}>
+          <img
+            src={logo}
+            alt="logo"
+            style={{ width: "auto", height: "100px", objectFit: "contain" }}
+          />
+        </div>
 
-      {/* Logo */}
-      <div style={{ width: "20%", textAlign: "right", marginTop: "10px" }}>
-        <img
-          src={logo}
-          alt="logo"
-          style={{ width: "auto", height: "100px", objectFit: "contain" }}
-        />
+        <button
+          onClick={handleLogout}
+          style={{
+            width: "100px",
+            height: "50px",
+            color: "black",
+            border: "0px solid red",
+            background: "white",
+            marginLeft: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Sair
+        </button>
+
+        {/* <div className="mt-10">{props.children}</div> */}
       </div>
     </div>
   );

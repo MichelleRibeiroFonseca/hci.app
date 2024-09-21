@@ -13,7 +13,10 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = () => {
-    setIsAuthenticated(true); // Atualiza o estado para indicar que o usuário fez login
+    setIsAuthenticated(true);
+  };
+  const handleLogout = () => {
+    setIsAuthenticated(false);
   };
   return (
     <div className="App">
@@ -24,10 +27,22 @@ function App() {
           <BrowserRouter>
             <Routes>
               {/* <Route path="/" Component={Menu}></Route> */}
-              <Route path="/" Component={MainPage}></Route>
-              <Route path="/clientes" Component={ClientesPage}></Route>
-              <Route path="/produtos" Component={ProdutosPage}></Route>
-              <Route path="/usuarios" Component={UsuariosPage}></Route>
+              <Route
+                path="/"
+                element={<MainPage handleLogout={handleLogout} />}
+              />
+              <Route
+                path="/clientes"
+                element={<ClientesPage handleLogout={handleLogout} />}
+              />
+              <Route
+                path="/produtos"
+                element={<ProdutosPage handleLogout={handleLogout} />}
+              />
+              <Route
+                path="/usuarios"
+                element={<UsuariosPage handleLogout={handleLogout} />}
+              />
             </Routes>
           </BrowserRouter>
         ) : (

@@ -18,7 +18,7 @@ import {
   MdOutlinePassword,
 } from "react-icons/md";
 
-export default function ClientesPage() {
+export default function ClientesPage({ handleLogout }) {
   const {
     getClientes,
     updateCliente,
@@ -262,7 +262,7 @@ export default function ClientesPage() {
 
   return (
     <>
-      <Container>
+      <Container handleLogout={handleLogout}>
         {isProcessing && <Loading />}
         <Error>{erroGeral}</Error>
 

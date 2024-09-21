@@ -16,7 +16,7 @@ import {
   MdOutlinePassword,
 } from "react-icons/md";
 
-export default function ProdutosPage() {
+export default function ProdutosPage({ handleLogout }) {
   const { getProdutos, updateProduto, addProduto, excluirProduto } =
     useProduto();
 
@@ -215,7 +215,7 @@ export default function ProdutosPage() {
   }
   return (
     <>
-      <Container>
+      <Container handleLogout={handleLogout}>
         {isProcessing && <Loading />}
         <Error>{erroGeral}</Error>
 

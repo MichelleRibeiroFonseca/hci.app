@@ -16,7 +16,7 @@ import {
   MdOutlinePassword,
 } from "react-icons/md";
 
-export default function UsuariosPage() {
+export default function UsuariosPage({ handleLogout }) {
   const { getUsuarios, addUsuario } = useUsuario();
 
   const [nomeFiltro, setNomeFiltro] = useState("");
@@ -167,7 +167,7 @@ export default function UsuariosPage() {
 
   return (
     <>
-      <Container>
+      <Container handleLogout={handleLogout}>
         {isProcessing && <Loading />}
         <Error>{erroGeral}</Error>
 
