@@ -20,6 +20,8 @@ export default function TextInput({
   isValor = false,
   isNumero = false,
   exibirMobile = true,
+  title = "",
+  placeholder = "",
 }) {
   function handleInputChange({ currentTarget }) {
     let newValue = currentTarget.value;
@@ -72,6 +74,8 @@ export default function TextInput({
         value={inputValue}
         onChange={handleInputChange}
         maxLength={maxLength}
+        title={title}
+        placeholder={placeholder}
       />
       {/* {validado && !inputValue && (
         <label className="text-red-700 text-xs ">{error}</label>

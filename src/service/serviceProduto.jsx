@@ -48,9 +48,21 @@ export async function deteProduto(id) {
 
 export async function updateProduto(data) {
   try {
+    debugger;
     const retorno = await _put("/produto", data);
     return retorno;
   } catch (erro) {
+    throw erro;
+  }
+}
+export async function excluirProduto(id_produto) {
+  try {
+    debugger;
+    var retorno = await _delete(`/produto/${id_produto}`);
+    retorno = { sucesso: true, mensagem: "Excluído com sucesso" };
+    return retorno;
+  } catch (erro) {
+    retorno = { sucesso: false, mensagem: "Erro ao Excluir" };
     throw erro;
   }
 }

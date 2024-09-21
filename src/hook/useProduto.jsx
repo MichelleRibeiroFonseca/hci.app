@@ -42,9 +42,20 @@ export function useProduto() {
     }
   }
 
+  async function excluirProduto(id_produto) {
+    try {
+      debugger;
+      const retorno = await serviceProduto.excluirProduto(id_produto);
+      return retorno;
+    } catch (erro) {
+      throw Error(erro.message);
+    }
+  }
+
   return {
     getProdutos,
     updateProduto,
     addProduto,
+    excluirProduto,
   };
 }

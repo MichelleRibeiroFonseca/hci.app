@@ -17,7 +17,8 @@ import {
 } from "react-icons/md";
 
 export default function ProdutosPage() {
-  const { getProdutos, updateProduto, addProduto } = useProduto();
+  const { getProdutos, updateProduto, addProduto, excluirProduto } =
+    useProduto();
 
   const [nomeFiltro, setNomeFiltro] = useState("");
 
@@ -94,6 +95,23 @@ export default function ProdutosPage() {
     limparDados();
     setOpenModal(true);
   }
+  async function handleExluir() {
+    setErroMensage("");
+    setIsProcessing(true);
+    const id_produto = idProduto;
+    try {
+      if (idProduto > 0) {
+        debugger;
+        const retorno = await excluirProduto(idProduto);
+
+        processaRetorno(retorno);
+      }
+    } catch (erro) {
+      setIsProcessing(false);
+
+      setErroMensage(erro.message);
+    }
+  }
 
   function limparDados() {
     setValidado(false);
@@ -132,7 +150,7 @@ export default function ProdutosPage() {
         dimensao: dimensao,
         peso: peso,
         ean: ean,
-        id_Produto: idProduto,
+        id_produto: idProduto,
       };
       try {
         if (idProduto > 0) {
@@ -349,12 +367,14 @@ export default function ProdutosPage() {
                 <div className="col-span-1">
                   <TextInput
                     labelDescription="DIMENSÕES"
+                    placeholder="Alt X Larg X Comp"
                     inputValue={dimensao}
                     onInputChange={(valor) => setDimensao(valor)}
                     validado={validado}
                     maxLength={150}
                     disabled={false}
                     allowNull={false}
+                    title="Digite as dimensões em centímetros"
                   />
                 </div>
                 <div className="w-32 text-left">
@@ -365,6 +385,8 @@ export default function ProdutosPage() {
                     validado={validado}
                     maxLength={15}
                     allowNull={false}
+                    title="Digite em KG"
+                    placeholder="KG"
                   />
                 </div>
                 <div className="col-span-1">
@@ -390,25 +412,7 @@ export default function ProdutosPage() {
                         <MdArrowBackIos />
                       </Button>
                     </div>
-                    <div className="flex-1">
-                      {idProduto > 0 && (
-                        <>
-                          <Button
-                            colorClass="bg-blue-700"
-                            onButtonClick={handleSolicitarSenha}
-                          >
-                            <MdOutlinePassword />
-                          </Button>
 
-                          <Button
-                            colorClass="bg-blue-700"
-                            onButtonClick={handleAgenda}
-                          >
-                            <MdSchedule />
-                          </Button>
-                        </>
-                      )}
-                    </div>
                     <div>
                       <Button
                         colorClass="bg-green-700"
@@ -426,7 +430,14 @@ export default function ProdutosPage() {
                     >
                       CANCELAR
                     </Button>
-
+                    {idProduto > 0 && (
+                      <Button
+                        colorClass="bg-red-700 w-32"
+                        onButtonClick={handleExluir}
+                      >
+                        Excluir
+                      </Button>
+                    )}
                     <Button
                       colorClass="bg-green-700 w-32"
                       onButtonClick={handleSalvar}
