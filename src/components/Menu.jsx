@@ -1,17 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faBox, faUser } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faBox, faUser } from '@fortawesome/free-solid-svg-icons';
 export default function Menu() {
   return (
     <>
       <div
         style={{
-          color: "black",
-          fontFamily: "Arial Black",
-          fontSize: "18px",
+          color: 'black',
+          fontFamily: 'Arial Black',
+          fontSize: '18px',
           // backgroundColor: "lightgray",
-          padding: "10px",
+          padding: '10px',
         }}
       >
         <Link className="flex items-center mb-4" to="/clientes">
@@ -23,6 +23,11 @@ export default function Menu() {
         <Link className="flex items-center mb-4" to="/produtos">
           <FontAwesomeIcon icon={faBox} className="mr-2" />
           <div className="flex-1">Produtos</div>
+        </Link>
+
+        <Link className="flex items-center mb-4" to="/orcamentos">
+          <FontAwesomeIcon icon={faBox} className="mr-2" />
+          <div className="flex-1">Orçamentos</div>
         </Link>
 
         {/* Usuarios */}
