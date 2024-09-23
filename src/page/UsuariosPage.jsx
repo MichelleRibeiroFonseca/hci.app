@@ -189,6 +189,7 @@ export default function UsuariosPage({ handleLogout }) {
         <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
           <TextInput
             labelDescription="Nome"
+            placeholder="Nome do Usuário"
             inputValue={nomeFiltro}
             autoFocus
             onInputChange={(valor) => setNomeFiltro(valor)}

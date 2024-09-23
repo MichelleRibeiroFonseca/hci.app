@@ -1,8 +1,9 @@
 import { _post, _get, _put, _delete } from "./httpService";
 
-export async function getByDescricao(nome) {
+export async function getByDescricao(descricao) {
   try {
-    const retorno = await _get(`/produto/byfilter/${nome}`);
+    debugger;
+    const retorno = await _get(`/produto/byNome/${descricao}`);
     return retorno;
   } catch (erro) {
     throw erro;

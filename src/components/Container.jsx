@@ -1,6 +1,7 @@
 import Menu from "./Menu";
 import logo from "../logo_hci.jpg";
 import { useEffect } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Container(props) {
   const { handleLogout } = props;
@@ -27,7 +28,7 @@ export default function Container(props) {
       }}
     >
       {/* Menu */}
-      <div style={{ width: "20%", marginTop: "10px", textAlign: "left" }}>
+      <div style={{ width: "20%", marginTop: "50px", textAlign: "left" }}>
         <Menu />
       </div>
 
@@ -57,7 +58,7 @@ export default function Container(props) {
         }}
       >
         {/* Logo */}
-        <div style={{ width: "auto" }}>
+        <div style={{ width: "auto", marginLeft: "100px" }}>
           <img
             src={logo}
             alt="logo"
@@ -69,17 +70,22 @@ export default function Container(props) {
           onClick={handleLogout}
           style={{
             width: "100px",
-            height: "50px",
-            color: "black",
+            height: "100px",
+            color: "red",
             border: "0px solid red",
             background: "white",
             marginLeft: "20px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: "0 20px",
+            backgroundColor: "transparent",
+            cursor: "pointer",
+            title: "Clique aqui para sair",
           }}
         >
-          Sair
+          <LogoutIcon style={{ fontSize: "50px" }} />{" "}
+          {/* Ajusta o tamanho do ícone */}
         </button>
 
         {/* <div className="mt-10">{props.children}</div> */}

@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import TextInput from '../components/controles/TextInput';
-import Button from '../components/controles/Button';
-import Container from '../components/Container';
-import { useProduto } from '../hook/useProduto';
-import ItemLista from '../components/telas/ItemLista';
-import ModalEdicao from '../components/telas/ModalEdicao';
-import Error from '../components/telas/Error';
-import Sucesso from '../components/telas/Sucesso';
-import Loading from '../components/telas/Loading';
-import Mensagem from '../components/telas/Mensagem';
+import React, { useEffect, useState } from "react";
+import TextInput from "../components/controles/TextInput";
+import Button from "../components/controles/Button";
+import Container from "../components/Container";
+import { useProduto } from "../hook/useProduto";
+import ItemLista from "../components/telas/ItemLista";
+import ModalEdicao from "../components/telas/ModalEdicao";
+import Error from "../components/telas/Error";
+import Sucesso from "../components/telas/Sucesso";
+import Loading from "../components/telas/Loading";
+import Mensagem from "../components/telas/Mensagem";
 import {
   MdArrowBackIos,
   MdSave,
   MdSchedule,
   MdOutlinePassword,
-} from 'react-icons/md';
+} from "react-icons/md";
 
 export default function ProdutosPage({ handleLogout }) {
   const { getProdutos, updateProduto, addProduto, excluirProduto } =
     useProduto();
 
-  const [nomeFiltro, setNomeFiltro] = useState('');
+  const [nomeFiltro, setNomeFiltro] = useState("");
 
-  const [erroGeral, setErroGeral] = useState('');
-  const [erroMensage, setErroMensage] = useState('');
-  const [mensageSucesso, setMensageSucesso] = useState('');
+  const [erroGeral, setErroGeral] = useState("");
+  const [erroMensage, setErroMensage] = useState("");
+  const [mensageSucesso, setMensageSucesso] = useState("");
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [listaProdutos, setListaProdutos] = useState([]);
   const [key, setKey] = useState(0);
-  const [nome, setNome] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [valorCusto, setValorCusto] = useState('');
-  const [valorVenda, setValorVenda] = useState('');
-  const [fornecedor, setFornecedor] = useState('');
-  const [quantidade, setQuantidade] = useState('');
-  const [unidade, setUnidade] = useState('');
-  const [ean, setEan] = useState('');
-  const [dimensao, setDimensao] = useState('');
-  const [peso, setPeso] = useState('');
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [valorCusto, setValorCusto] = useState("");
+  const [valorVenda, setValorVenda] = useState("");
+  const [fornecedor, setFornecedor] = useState("");
+  const [quantidade, setQuantidade] = useState("");
+  const [unidade, setUnidade] = useState("");
+  const [ean, setEan] = useState("");
+  const [dimensao, setDimensao] = useState("");
+  const [peso, setPeso] = useState("");
   const [idProduto, setIdProduto] = useState(0);
   const [validado, setValidado] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -65,8 +65,9 @@ export default function ProdutosPage({ handleLogout }) {
   }
 
   async function handleBuscar() {
-    setErroGeral('');
+    setErroGeral("");
     try {
+      debugger;
       setIsProcessing(true);
       const listaProdutosFiltro = await getProdutos(nomeFiltro);
       setListaProdutos(listaProdutosFiltro);
@@ -79,7 +80,8 @@ export default function ProdutosPage({ handleLogout }) {
   }
 
   async function handleBuscar() {
-    setErroGeral('');
+    debugger;
+    setErroGeral("");
     try {
       setIsProcessing(true);
       const listaProdutosFiltro = await getProdutos(nomeFiltro);
@@ -96,7 +98,7 @@ export default function ProdutosPage({ handleLogout }) {
     setOpenModal(true);
   }
   async function handleExluir() {
-    setErroMensage('');
+    setErroMensage("");
     setIsProcessing(true);
     const id_produto = idProduto;
     try {
@@ -115,35 +117,35 @@ export default function ProdutosPage({ handleLogout }) {
 
   function limparDados() {
     setValidado(false);
-    setNome('');
-    setDescricao('');
-    setValorVenda('');
-    setValorCusto('');
-    setFornecedor('');
-    setQuantidade('');
-    setUnidade('');
-    setDimensao('');
-    setPeso('');
-    setEan('');
+    setNome("");
+    setDescricao("");
+    setValorVenda("");
+    setValorCusto("");
+    setFornecedor("");
+    setQuantidade("");
+    setUnidade("");
+    setDimensao("");
+    setPeso("");
+    setEan("");
     setIdProduto(0);
     setClienteSelect();
-    setNomeFiltro('');
+    setNomeFiltro("");
   }
 
   function handleFecharModal() {
-    setMensageSucesso('');
+    setMensageSucesso("");
     setOpenModal(false);
     handleBuscar();
   }
   async function handleSalvar() {
     const valorVendaSalvar = parseFloat(
-      valorVenda.replace('R$ ', '').replace('.', '').replace(',', '.')
+      valorVenda.replace("R$ ", "").replace(".", "").replace(",", ".")
     );
     const valorCustoSalvar = parseFloat(
-      valorCusto.replace('R$ ', '').replace('.', '').replace(',', '.')
+      valorCusto.replace("R$ ", "").replace(".", "").replace(",", ".")
     );
 
-    setErroMensage('');
+    setErroMensage("");
     setIsProcessing(true);
     if (dadosValidos()) {
       const produto = {
@@ -227,10 +229,10 @@ export default function ProdutosPage({ handleLogout }) {
 
         <Mensagem
           key={key}
-          mensagem={'Confirma a solicitação da senha?'}
+          mensagem={"Confirma a solicitação da senha?"}
           closeFunction={handleCloseMensagem}
           openModal={isOpenMensagem}
-          textButton={'Confirmar'}
+          textButton={"Confirmar"}
         />
         {/* <Header submenu="Clientes"></Header> */}
         {
@@ -239,9 +241,10 @@ export default function ProdutosPage({ handleLogout }) {
         <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
           <TextInput
             labelDescription="Nome"
+            placeholder="Nome do Produto"
             inputValue={nomeFiltro}
             autoFocus
-            onInputChange={valor => setNomeFiltro(valor)}
+            onInputChange={(valor) => setNomeFiltro(valor)}
           />
           <Button
             colorClass="bg-blue-600 w-30 md:w-40"
@@ -257,7 +260,7 @@ export default function ProdutosPage({ handleLogout }) {
           </Button>
         </div>
         <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
-        <div style={{ height: '50px' }}></div>
+        <div style={{ height: "50px" }}></div>
         <div className="w-full">
           {/* <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-black">
             <div className="flex-1 pl-2">Código</div>
@@ -297,10 +300,10 @@ export default function ProdutosPage({ handleLogout }) {
               <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="CODIGO"
-                    inputValue={idProduto}
+                    labelDescription="codigo"
+                    inputValue={idProduto > 0 ? idProduto : ""}
                     autoFocus
-                    onInputChange={valor => setIdProduto(valor)}
+                    onInputChange={(valor) => setIdProduto(valor)}
                     disabled={true}
                     allowNull={false}
                   />
@@ -310,7 +313,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Descrição"
                     inputValue={descricao}
-                    onInputChange={valor => setDescricao(valor)}
+                    onInputChange={(valor) => setDescricao(valor)}
                     validado={validado}
                     maxLength={150}
                     allowNull={false}
@@ -321,7 +324,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Valor Venda"
                     inputValue={valorVenda}
-                    onInputChange={valor => setValorVenda(valor)}
+                    onInputChange={(valor) => setValorVenda(valor)}
                     validado={validado}
                     allowNull={false}
                     isValor={true}
@@ -331,7 +334,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Valor Custo"
                     inputValue={valorCusto}
-                    onInputChange={valor => setValorCusto(valor)}
+                    onInputChange={(valor) => setValorCusto(valor)}
                     validado={validado}
                     allowNull={false}
                     isValor={true}
@@ -341,7 +344,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Fornecedor"
                     inputValue={fornecedor}
-                    onInputChange={valor => setFornecedor(valor)}
+                    onInputChange={(valor) => setFornecedor(valor)}
                     validado={validado}
                     allowNull={false}
                   />
@@ -351,7 +354,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Quantidade"
                     inputValue={quantidade}
-                    onInputChange={valor => setQuantidade(valor)}
+                    onInputChange={(valor) => setQuantidade(valor)}
                     validado={validado}
                     maxLength={4}
                     allowNull={false}
@@ -363,7 +366,7 @@ export default function ProdutosPage({ handleLogout }) {
                   <TextInput
                     labelDescription="Unidade"
                     inputValue={unidade}
-                    onInputChange={valor => setUnidade(valor)}
+                    onInputChange={(valor) => setUnidade(valor)}
                     validado={validado}
                     maxLength={250}
                     allowNull={false}
@@ -372,34 +375,34 @@ export default function ProdutosPage({ handleLogout }) {
 
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="DIMENSÕES"
-                    placeholder="Alt X Larg X Comp"
+                    labelDescription="DIMENSÕES (alt X larg X comp em .cm)"
+                    //placeholder="Alt X Larg X Comp"
                     inputValue={dimensao}
-                    onInputChange={valor => setDimensao(valor)}
+                    onInputChange={(valor) => setDimensao(valor)}
                     validado={validado}
                     maxLength={150}
                     disabled={false}
                     allowNull={false}
-                    title="Digite as dimensões em centímetros"
+                    //title="Digite as dimensões em centímetros"
                   />
                 </div>
                 <div className="w-32 text-left">
                   <TextInput
-                    labelDescription="PESO"
+                    labelDescription="PESO (KG)"
                     inputValue={peso}
-                    onInputChange={valor => setPeso(valor)}
+                    onInputChange={(valor) => setPeso(valor)}
                     validado={validado}
                     maxLength={15}
                     allowNull={false}
-                    title="Digite em KG"
-                    placeholder="KG"
+                    //title="Digite em KG"
+                    //placeholder="KG"
                   />
                 </div>
                 <div className="col-span-1">
                   <TextInput
                     labelDescription="EAN"
                     inputValue={ean}
-                    onInputChange={valor => setEan(valor)}
+                    onInputChange={(valor) => setEan(valor)}
                     validado={validado}
                     maxLength={50}
                     allowNull={false}
