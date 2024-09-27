@@ -36,6 +36,7 @@ export default function OrcamentosPage({ handleLogout }) {
   const [statusOrcamento, setStatusOrcamento] = useState();
   const [listaItensOrcamento, setListaItensOrcamento] = useState([]);
   const [totalOrcamento, setTotalOrcamento] = useState('');
+  const [acao, setAcao] = useState('');
 
   const [orcamentoSelect, setOrcamentoSelect] = useState();
   const [key, setKey] = useState(0);
@@ -58,7 +59,9 @@ export default function OrcamentosPage({ handleLogout }) {
       const listaProdutos = await getProdutos();
       listaProdutos.forEach(function (produto) {
         produto['id'] = produto.id_produto;
-        produto['label'] = produto.descricao;
+        produto[
+          'label'
+        ] = `${produto.descricao} - ${produto.unidade} - ${produto.dimensao}`;
       });
       setListaProdutos(listaProdutos);
     };
@@ -89,6 +92,8 @@ export default function OrcamentosPage({ handleLogout }) {
 
     listaItensOrcamentoNew[index].id_produto = value.id_produto;
     listaItensOrcamentoNew[index].descricao = value.descricao;
+    listaItensOrcamentoNew[index].unidade = value.unidade;
+    listaItensOrcamentoNew[index].volume = value.volume;
 
     listaItensOrcamentoNew[index].total = maskValor(
       (
@@ -143,21 +148,29 @@ export default function OrcamentosPage({ handleLogout }) {
 
   async function handleItemClick(index) {
     const itemSelected = listaOrcamentos[index];
-    const orcamento = await getById(itemSelected.id_orcamento);
+    openOrcamento(itemSelected.id_orcamento);
+  }
+
+  async function openOrcamento(id_orcamento) {
+    const orcamento = await getById(id_orcamento);
 
     limparDados();
+
+    console.log(orcamento);
+
     setListaItensOrcamento(orcamento.itens);
-    setOrcamentoSelect(itemSelected);
-    setIdOrcamento(itemSelected.id_orcamento);
-    setIdCliente(itemSelected.id_cliente);
-    setCodigoOrcamento(itemSelected.codigo_orcamento);
-    setDataValidade(DateToControl(new Date(itemSelected.data_validade)));
-    setFormaPagmento(itemSelected.forma_pagamento);
-    setFormaEnvio(itemSelected.forma_envio);
-    setStatusOrcamento(itemSelected.status_orcamento);
+    //setOrcamentoSelect(itemSelected);
+    setIdOrcamento(orcamento.id_orcamento);
+    setIdCliente(orcamento.id_cliente);
+    setCodigoOrcamento(orcamento.codigo_orcamento);
+    setDataValidade(DateToControl(new Date(orcamento.data_validade)));
+    setFormaPagmento(orcamento.forma_pagamento);
+    setFormaEnvio(orcamento.forma_envio);
+    setStatusOrcamento(orcamento.status_orcamento);
     setTotalOrcamento(getTotalItens(orcamento.itens));
-    setNome(itemSelected.nome_cliente);
+    setNome(orcamento.nome_cliente);
     setOpenModal(true);
+    setKey(key + 1);
   }
 
   function getTotalItens(lista) {
@@ -176,6 +189,7 @@ export default function OrcamentosPage({ handleLogout }) {
     setOpenModal(true);
   }
   async function handleExluir() {
+    setAcao('E');
     setErroMensage('');
     setIsProcessing(true);
     try {
@@ -207,11 +221,12 @@ export default function OrcamentosPage({ handleLogout }) {
 
   function handleFecharModal() {
     setMensageSucesso('');
-    setOpenModal(false);
+    if (acao == 'E') setOpenModal(false);
     handleBuscar();
   }
   async function handleSalvar() {
     setErroMensage('');
+    setAcao('A');
     setIsProcessing(true);
     if (dadosValidos()) {
       const orcamento = {
@@ -229,7 +244,9 @@ export default function OrcamentosPage({ handleLogout }) {
           processaRetorno(retorno);
         } else {
           const retorno = await addOrcamento(orcamento);
+
           processaRetorno(retorno);
+          openOrcamento(retorno.Orcamento[0].id_orcamento);
         }
       } catch (erro) {
         setIsProcessing(false);
@@ -338,6 +355,8 @@ export default function OrcamentosPage({ handleLogout }) {
       id_orcamento_item: 0,
       id_produto: 0,
       descricao: '',
+      dimensao: '',
+      unidade: '',
       quantidade: 0,
       valor_unitario: 0,
       total: 0,
@@ -439,10 +458,10 @@ export default function OrcamentosPage({ handleLogout }) {
               <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-1">
                   <TextInput
+                    key={key}
                     labelDescription="CODIGO"
                     inputValue={codigoOrcamento}
                     autoFocus
-                    onInputChange={valor => setCodigoOrcamento(valor)}
                     disabled={true}
                     allowNull={false}
                   />
@@ -517,6 +536,7 @@ export default function OrcamentosPage({ handleLogout }) {
                   <div className="">
                     <p className="text-sm">Valor Unitário</p>
                   </div>
+
                   <div className="">
                     <p className="text-sm">Total</p>
                   </div>
@@ -536,7 +556,7 @@ export default function OrcamentosPage({ handleLogout }) {
                           <div className=" col-span-6">
                             <TextAutocomplete
                               lista={listaProdutos}
-                              inputValue={item.descricao}
+                              inputValue={`${item.descricao} - ${item.unidade} - ${item.dimensao}`}
                               onInputChange={value =>
                                 onHandleProduto(index, value)
                               }
@@ -544,6 +564,7 @@ export default function OrcamentosPage({ handleLogout }) {
                               labelDescription=""
                             ></TextAutocomplete>
                           </div>
+
                           <div className="">
                             <TextInput
                               inputValue={item.quantidade}
@@ -556,6 +577,7 @@ export default function OrcamentosPage({ handleLogout }) {
                           <div className="text-sm">
                             {maskValor(item.valor_unitario.toString())}
                           </div>
+
                           <div className=" ">
                             <p className="text-sm">
                               {maskValor(item.total.toString())}
@@ -629,12 +651,14 @@ export default function OrcamentosPage({ handleLogout }) {
                       SALVAR
                     </Button>
 
-                    <Button
-                      colorClass="bg-blue-700 w-32"
-                      onButtonClick={handleGerarPDF}
-                    >
-                      GERAR PDF
-                    </Button>
+                    {idOrcamento > 0 && (
+                      <Button
+                        colorClass="bg-blue-700 w-32"
+                        onButtonClick={handleGerarPDF}
+                      >
+                        GERAR PDF
+                      </Button>
+                    )}
                   </div>
                 </>
               )}
