@@ -1,4 +1,4 @@
-import { _post, _get, _put } from "./httpService";
+import { _post, _get, _put, _delete } from "./httpService";
 
 export async function validarLogin(data) {
   debugger;
@@ -22,7 +22,39 @@ export async function addUsuario(data) {
 
 export async function getAll() {
   try {
+    debugger;
     const retorno = await _get(`/usuario`);
+    return retorno;
+  } catch (erro) {
+    throw erro;
+  }
+}
+
+export async function deleteUsuario(id_usuario) {
+  try {
+    debugger;
+    var retorno = await _delete(`/usuario/${id_usuario}`);
+    retorno = { sucesso: true, mensagem: "Excluído com sucesso" };
+    return retorno;
+  } catch (erro) {
+    retorno = { sucesso: false, mensagem: "Erro ao Excluir" };
+    throw erro;
+  }
+}
+export async function getByDescricao(descricao) {
+  try {
+    debugger;
+    const retorno = await _post(`/usuario/ByFilter/${descricao}`);
+    return retorno;
+  } catch (erro) {
+    throw erro;
+  }
+}
+
+export async function getUsuarioByNome(nome_usuario) {
+  try {
+    debugger;
+    const retorno = await _get(`/usuario/ByNome/${nome_usuario}`);
     return retorno;
   } catch (erro) {
     throw erro;

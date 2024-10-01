@@ -226,7 +226,6 @@ export default function ProdutosPage({ handleLogout }) {
       <Container handleLogout={handleLogout}>
         {isProcessing && <Loading />}
         <Error>{erroGeral}</Error>
-
         <Mensagem
           key={key}
           mensagem={"Confirma a solicitação da senha?"}
@@ -236,8 +235,34 @@ export default function ProdutosPage({ handleLogout }) {
         />
         {/* <Header submenu="Clientes"></Header> */}
         {
-          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
+          <div
+            className="col-span-1"
+            style={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center", // Centraliza horizontalmente
+              alignItems: "center", // Centraliza verticalmente
+
+              marginTop: "20px", // Espaçamento superior para distanciar do cabeçalho, se necessário
+              color: "black",
+            }}
+          >
+            <div
+              className="col-span-1"
+              style={{
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "black",
+                fontSize: "24px",
+              }}
+            >
+              Consultar Produtos
+            </div>
+          </div>
         }
+
         <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
           <TextInput
             labelDescription="Nome"
@@ -250,7 +275,7 @@ export default function ProdutosPage({ handleLogout }) {
             colorClass="bg-blue-600 w-30 md:w-40"
             onButtonClick={handleBuscar}
           >
-            Buscar
+            Consultar
           </Button>
           <Button
             colorClass="bg-green-600 w-30 md:w-40"

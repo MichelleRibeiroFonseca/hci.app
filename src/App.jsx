@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import logo from './logo_hci.jpg';
-import './App.css';
-import Login from './Login';
-import Home from './Home';
-import ClientesPage from './page/ClientesPage';
-import ProdutosPage from './page/ProdutosPage';
-import UsuariosPage from './page/UsuariosPage';
-import OrcamentosPage from './page/OrcamentosPage';
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import logo from "./logo_hci.jpg";
+import "./App.css";
+import Login from "./Login";
+import Home from "./Home";
+import ClientesPage from "./page/ClientesPage";
+import ProdutosPage from "./page/ProdutosPage";
+import UsuariosPage from "./page/UsuariosPage";
+import OrcamentosPage from "./page/OrcamentosPage";
 
-import MainPage from './page/MainPage';
-import Menu from './components/Menu';
+import MainPage from "./page/MainPage";
+import Menu from "./components/Menu";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

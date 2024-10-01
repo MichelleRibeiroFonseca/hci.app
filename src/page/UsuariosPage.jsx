@@ -15,9 +15,10 @@ import {
   MdSchedule,
   MdOutlinePassword,
 } from "react-icons/md";
+import { deleteUsuario, getUsuarioByNome } from "../service/serviceUsuario";
 
 export default function UsuariosPage({ handleLogout }) {
-  const { getUsuarios, addUsuario } = useUsuario();
+  const { getAll, addUsuario, deleteUsuario } = useUsuario();
 
   const [nomeFiltro, setNomeFiltro] = useState("");
 
@@ -36,7 +37,7 @@ export default function UsuariosPage({ handleLogout }) {
   const [openModalAgenda, setOpenModalAgenda] = useState(false);
   const [clienteSelected, setClienteSelect] = useState();
   const [isOpenMensagem, setIsOpenMensagem] = useState(false);
-
+  const [listaUsuarioFiltro, setListaUsuario] = useState([]);
   function handleItemClick(index) {
     const itemSelected = listaUsuario[index];
     limparDados();
@@ -48,33 +49,42 @@ export default function UsuariosPage({ handleLogout }) {
     setOpenModal(true);
   }
 
+  // async function handleBuscar() {
+  //   setErroGeral("");
+  //   try {
+  //     setIsProcessing(true);
+  //     if nomeFiltro =""{}
+  //     const listaUsuarioFiltro = await getUsuarios(nomeFiltro);
+  //     setListaUsuarios(listaUsuarioFiltro);
+  //     setKey(key + 1);
+  //     setIsProcessing(false);
+  //   } catch (erro) {
+  //     setIsProcessing(false);
+  //     setErroGeral(erro.message);
+  //   }
+  // }
+
   async function handleBuscar() {
+    debugger;
     setErroGeral("");
     try {
       setIsProcessing(true);
-      const listaUsuarioFiltro = await getUsuarios(nomeFiltro);
+
+      if (nomeFiltro === "") {
+        listaUsuarioFiltro = await getAll(); // Chama getAll para pegar todos os usuários
+      } else {
+        listaUsuarioFiltro = await getUsuarioByNome(nomeFiltro); // Chama getUsuarioByNome
+      }
+
       setListaUsuarios(listaUsuarioFiltro);
-      setKey(key + 1);
-      setIsProcessing(false);
+      setKey((prevKey) => prevKey + 1);
     } catch (erro) {
-      setIsProcessing(false);
       setErroGeral(erro.message);
+    } finally {
+      setIsProcessing(false); // Garante que o estado de processamento é atualizado
     }
   }
 
-  async function handleBuscar() {
-    setErroGeral("");
-    try {
-      setIsProcessing(true);
-      const listaUsuarioFiltro = await getUsuarios(nomeFiltro);
-      setListaUsuarios(listaUsuarioFiltro);
-      setKey(key + 1);
-      setIsProcessing(false);
-    } catch (erro) {
-      setIsProcessing(false);
-      setErroGeral(erro.message);
-    }
-  }
   function handleNovo() {
     limparDados();
     setOpenModal(true);
@@ -125,6 +135,23 @@ export default function UsuariosPage({ handleLogout }) {
     setOpenModal(false);
   }
 
+  async function handleExluir() {
+    debugger;
+    setErroMensage("");
+    setIsProcessing(true);
+    try {
+      if (idUsuario > 0) {
+        const retorno = await deleteUsuario(idUsuario);
+
+        processaRetorno(retorno);
+      }
+    } catch (erro) {
+      setIsProcessing(false);
+
+      setErroMensage(erro.message);
+    }
+  }
+
   function processaRetorno(retorno) {
     debugger;
     setIsProcessing(false);
@@ -170,7 +197,6 @@ export default function UsuariosPage({ handleLogout }) {
       <Container handleLogout={handleLogout}>
         {isProcessing && <Loading />}
         <Error>{erroGeral}</Error>
-
         {/* <ModalEdicao
         titulo="AGENDA CLIENTE"
         isOpenEdicao={isOpenMensagem}
@@ -183,9 +209,33 @@ export default function UsuariosPage({ handleLogout }) {
           textButton={"Confirmar"}
         />
         {/* <Header submenu="Clientes"></Header> */}
-        {
-          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
-        }
+        <div
+          className="col-span-1"
+          style={{
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center", // Centraliza horizontalmente
+            alignItems: "center", // Centraliza verticalmente
+
+            marginTop: "20px", // Espaçamento superior para distanciar do cabeçalho, se necessário
+            color: "black",
+          }}
+        >
+          <div
+            className="col-span-1"
+            style={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "black",
+              fontSize: "24px",
+            }}
+          >
+            Consultar Usuários
+          </div>
+        </div>
+
         <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
           <TextInput
             labelDescription="Nome"
@@ -198,7 +248,7 @@ export default function UsuariosPage({ handleLogout }) {
             colorClass="bg-blue-600 w-30 md:w-40"
             onButtonClick={handleBuscar}
           >
-            Buscar
+            Consultar
           </Button>
           <Button
             colorClass="bg-green-600 w-30 md:w-40"
@@ -320,24 +370,22 @@ export default function UsuariosPage({ handleLogout }) {
                       CANCELAR
                     </Button>
 
-                    {/* {idCliente > 0 && (
-                    <>
+                    {idUsuario > 0 && (
                       <Button
-                        colorClass="bg-blue-700 w-64"
-                        onButtonClick={handleSolicitarSenha}
+                        colorClass="bg-red-700 w-32"
+                        onButtonClick={handleExluir}
                       >
-                        SOLICITAR SENHA
+                        Excluir
                       </Button>
-
+                    )}
+                    {idUsuario > 0 && (
                       <Button
-                        colorClass="bg-blue-700 w-64"
-                        onButtonClick={handleAgenda}
+                        colorClass="bg-red-700 w-32"
+                        onButtonClick={handleExluir}
                       >
-                        AGENDA
+                        Excluir
                       </Button>
-                    </>
-                  )} */}
-
+                    )}
                     <Button
                       colorClass="bg-green-700 w-32"
                       onButtonClick={handleSalvar}

@@ -1,94 +1,61 @@
-import Menu from './Menu';
-import logo from '../logo_hci.jpg';
-import { useEffect } from 'react';
-import { MdLogout } from 'react-icons/md';
+import Menu from "./Menu";
+import logo from "../logo_hci.jpg";
+import { useEffect } from "react";
+import { MdLogout } from "react-icons/md";
 
 export default function Container(props) {
   const { handleLogout } = props;
-  useEffect(() => {
-    // Adicionar o fundo branco ao body
-    document.body.style.backgroundColor = '#fff';
 
-    // Limpar o estilo quando o componente desmontar
+  useEffect(() => {
+    // Definir o fundo branco para o body
+    document.body.style.backgroundColor = "#fff";
     return () => {
       document.body.style.backgroundColor = null;
     };
   }, []);
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        width: '100%',
-        minHeight: '100vh',
-        padding: '0 20px', // Adicionar padding de 20px nas laterais
-        boxSizing: 'border-box', // Garantir que o padding seja incluído no tamanho total
-        backgroundColor: 'white',
-      }}
-    >
-      {/* Menu */}
-      <div style={{ width: '20%', marginTop: '50px', textAlign: 'left' }}>
-        <Menu />
-      </div>
 
-      {/* Conteúdo principal */}
-      <div
-        style={{
-          flex: 1,
-          margin: '10px 20px',
-          textAlign: 'center',
-          fontFamily: 'Arial Black',
-          width: '90%',
-        }}
-      >
-        <div style={{ height: '100px' }}></div>
-        <div className="flex-1" style={{ color: 'black' }}>
+  return (
+    <div className="flex flex-col min-h-screen w-full bg-white box-border">
+      {/* Cabeçalho */}
+      <div className="flex items-center justify-between p-5 h-20 border-b-2 border-gray-300 bg-gray-100">
+        {/* Logo */}
+        <img
+          src={logo}
+          alt="logo"
+          className="h-16 object-contain  mt-2"
+          ml-20
+        />
+
+        {/* Título no centro */}
+        <div className="font-black text-1xl text-black text-center flex-1 ml-20">
           Gestão de Orçamentos
         </div>
 
-        <div className="mt-10">{props.children}</div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px',
-        }}
-      >
-        {/* Logo */}
-        <div style={{ width: 'auto', marginLeft: '100px' }}>
-          <img
-            src={logo}
-            alt="logo"
-            style={{ width: 'auto', height: '100px', objectFit: 'contain' }}
-          />
-        </div>
-
+        {/* Botão de Logout */}
         <button
           onClick={handleLogout}
-          style={{
-            width: '100px',
-            height: '100px',
-            color: 'red',
-            border: '0px solid red',
-            background: 'white',
-            marginLeft: '20px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '0 20px',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-            title: 'Clique aqui para sair',
-          }}
+          className="w-24 h-24 border-none bg-transparent flex justify-center items-center cursor-pointer"
+          title="Clique aqui para sair"
         >
-          <MdLogout style={{ fontSize: '50px' }} />{' '}
-          {/* Ajusta o tamanho do ícone */}
+          <MdLogout
+            //className="text-red-600 text-5xl"
+            src={logo}
+            alt="logo"
+            className="h-16 object-contain  mt-2 text-red-600 text-3xl 
+            ml-10"
+          />
         </button>
+      </div>
 
-        {/* <div className="mt-10">{props.children}</div> */}
+      {/* Corpo da página com Menu e Conteúdo */}
+      <div className="flex flex-col md:flex-row flex-1">
+        {/* Menu à esquerda */}
+        <div className="md:w-1/10 p-2 border-r-2 border-gray-300 text-left bg-gray-100">
+          <Menu />
+        </div>
+
+        {/* Conteúdo à direita */}
+        <div className="flex-1 p-5 md:ml-5 md:mt-5">{props.children}</div>
       </div>
     </div>
   );

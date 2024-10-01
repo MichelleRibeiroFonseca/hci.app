@@ -62,12 +62,19 @@ export default function ClientesPage({ handleLogout }) {
         try {
           setIsProcessing(true);
           const listaCEP = await getCEP(CEP);
+          debugger;
           if (!listaCEP.erro) {
-            setLogradouro(listaCEP.logradouro);
+            debugger;
+            if (listaCEP && listaCEP.logradouro) {
+              setLogradouro(listaCEP.logradouro);
+            }
+            console.log("lista", listaCEP);
+            //setLogradouro(listaCEP.logradouro);
             setBairro(listaCEP.bairro);
             setUf(listaCEP.uf);
             setCidade(listaCEP.localidade);
             setCEPAtual(CEP);
+            setKey(key + 1);
           } else {
             setLogradouro("");
             setBairro("");
@@ -279,8 +286,34 @@ export default function ClientesPage({ handleLogout }) {
         />
         {/* <Header submenu="Clientes"></Header> */}
         {
-          <div className="hidden md:flex text-left bg-cyan-600 text-sm rounded-sm pl-2 text-white"></div>
+          <div
+            className="col-span-1"
+            style={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center", // Centraliza horizontalmente
+              alignItems: "center", // Centraliza verticalmente
+
+              marginTop: "20px", // Espaçamento superior para distanciar do cabeçalho, se necessário
+              color: "black",
+            }}
+          >
+            <div
+              className="col-span-1"
+              style={{
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "black",
+                fontSize: "24px",
+              }}
+            >
+              Consultar Clientes
+            </div>
+          </div>
         }
+
         <div className="ml-5 mr-5 rounded-xl border-2 pl-6 pr-6 border-gray-600">
           <TextInput
             labelDescription="Nome"
@@ -293,7 +326,7 @@ export default function ClientesPage({ handleLogout }) {
             colorClass="bg-blue-600 w-30 md:w-40"
             onButtonClick={handleBuscar}
           >
-            Buscar
+            Consultar
           </Button>
           <Button
             colorClass="bg-green-600 w-30 md:w-40"
@@ -394,6 +427,8 @@ export default function ClientesPage({ handleLogout }) {
                     maxLength={100}
                     disabled={true}
                     allowNull={true}
+                    value={logradouro}
+                    key={key}
                   />
                 </div>
                 <div className="w-32 text-left">
@@ -420,12 +455,13 @@ export default function ClientesPage({ handleLogout }) {
                 <div className="col-span-1">
                   <TextInput
                     labelDescription="Bairro"
-                    inputValue={bairro}
+                    inputValue={bairro || ""}
                     onInputChange={(valor) => setBairro(valor)}
                     validado={validado}
                     maxLength={50}
-                    disabled={true}
+                    disabled={false}
                     allowNull={true}
+                    className="rounded-md border p-2 text-black bg-gray-400"
                   />
                 </div>
                 <div className="flex-1 text-left">
