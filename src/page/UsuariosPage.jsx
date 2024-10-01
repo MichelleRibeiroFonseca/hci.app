@@ -380,14 +380,6 @@ export default function UsuariosPage({ handleLogout }) {
                         Excluir
                       </Button>
                     )}
-                    {idUsuario > 0 && (
-                      <Button
-                        colorClass="bg-red-700 w-32"
-                        onButtonClick={handleExluir}
-                      >
-                        Excluir
-                      </Button>
-                    )}
                     <Button
                       colorClass="bg-green-700 w-32"
                       onButtonClick={handleSalvar}
