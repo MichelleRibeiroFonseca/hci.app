@@ -310,18 +310,17 @@ export default function UsuariosPage({ handleLogout }) {
                     allowNull={false}
                   />
                 </div>
-                {idUsuario == 0 && (
-                  <div className="col-span-1">
-                    <TextInput
-                      labelDescription="Senha"
-                      inputValue={senha}
-                      onInputChange={(valor) => setSenha(valor)}
-                      validado={validado}
-                      maxLength={14}
-                      allowNull={false}
-                    />
-                  </div>
-                )}
+
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Senha"
+                    inputValue={senha}
+                    onInputChange={(valor) => setSenha(valor)}
+                    validado={validado}
+                    maxLength={14}
+                    allowNull={false}
+                  />
+                </div>
               </div>
 
               {!isProcessing && (
