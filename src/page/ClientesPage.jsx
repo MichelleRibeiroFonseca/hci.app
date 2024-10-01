@@ -250,21 +250,58 @@ export default function ClientesPage({ handleLogout }) {
     setOpenModal(false);
   }
 
-  function dadosValidos() {
-    setValidado(true);
-    debugger;
-    return (
-      nome.trim().length > 5 &&
-      email.trim().length > 5 &&
-      cpf.trim().length === 14
-      //telefone.trim().length === 15
-    );
-  }
-
   function handleCloseMensagem() {
     setIsOpenMensagem(false);
     setOpenModal(true);
     setKey(key + 1);
+  }
+
+  function dadosValidos() {
+    let message = "";
+    setErroMensage(""); // Limpa a mensagem de erro inicialmente
+    setValidado(true); // Assume que os dados são válidos no começo
+
+    // Verifica o nome
+    if (nome.trim().length <= 4) {
+      message = "O nome deve ter pelo menos 4 caracteres.";
+      setErroMensage(message);
+      setValidado(false);
+      return false;
+    }
+
+    // Verifica o email
+    if (email != "") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex simples para validar email
+      if (!emailRegex.test(email)) {
+        message = "O email deve conter '@' e um domínio como '.com'.";
+        setErroMensage(message);
+        setValidado(false);
+        return false;
+      }
+    }
+
+    // Verifica o CPF
+    if (cpf != "") {
+      if (cpf.trim().length !== 14) {
+        message = "O CPF deve ter exatamente 14 caracteres.";
+        setErroMensage(message);
+        setValidado(false);
+        return false;
+      }
+    }
+
+    // Verifica o telefone (aceitando celular e fixo)
+    const telefoneRegex = /^\(\d{2}\)\s?(\d{4,5})-\d{4}$/;
+    if (!telefoneRegex.test(telefone.trim())) {
+      message =
+        "O telefone deve estar no formato (XX) XXXX-XXXX ou (XX) 9XXXX-XXXX.";
+      setErroMensage(message);
+      setValidado(false);
+      return false;
+    }
+
+    // Se passar por todas as validações, retorna true
+    return true;
   }
 
   return (
@@ -383,6 +420,7 @@ export default function ClientesPage({ handleLogout }) {
                     onInputChange={(valor) => setCpf(valor)}
                     validado={validado}
                     maxLength={14}
+                    allowNull={true}
                   />
                 </div>
 
@@ -392,6 +430,7 @@ export default function ClientesPage({ handleLogout }) {
                     inputValue={email}
                     onInputChange={(valor) => setEmail(valor)}
                     validado={validado}
+                    allowNull={true}
                   />
                 </div>
 

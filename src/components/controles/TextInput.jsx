@@ -1,19 +1,19 @@
 // import { getNewId } from "../../services/idService";
-import { useState } from 'react';
-import { maskCPF, maskCEP, maskCelular, maskValor } from '../../Util/mascara';
+import { useState } from "react";
+import { maskCPF, maskCEP, maskCelular, maskValor } from "../../Util/mascara";
 
 export default function TextInput({
-  labelDescription = 'Descrição do Label',
-  inputValue = 'Valor padrao do input',
+  labelDescription = "Descrição do Label",
+  inputValue = "Valor padrao do input",
   onInputChange = null,
   onInputBlur = null,
   id = 0, //getNewId(),
   autoFocus = false,
-  error = '',
+  error = "",
   validado = false,
   allowNull = false,
   maxLength = 100,
-  type = 'text',
+  type = "text",
   minValue = 0,
   disabled = false,
   isCPF = false,
@@ -22,8 +22,8 @@ export default function TextInput({
   isValor = false,
   isNumero = false,
   exibirMobile = true,
-  title = '',
-  placeholder = '',
+  title = "",
+  placeholder = "",
   noDescription = false,
 }) {
   const [valor, setValor] = useState(inputValue);
@@ -33,7 +33,7 @@ export default function TextInput({
 
     // Aplicar a máscara de número se isNumero for verdadeiro
     if (isNumero) {
-      newValue = newValue.replace(/\D/g, ''); // Remove não dígitos
+      newValue = newValue.replace(/\D/g, ""); // Remove não dígitos
     }
 
     // Aplicar as outras máscaras
@@ -63,8 +63,8 @@ export default function TextInput({
   }
 
   const classe =
-    validado && !inputValue && !allowNull ? ' text-red-700 border-red-700' : '';
-  const classeDisabled = disabled ? 'bg-gray-400' : 'bg-gray-200';
+    validado && !inputValue && !allowNull ? " text-red-700 border-red-700" : "";
+  const classeDisabled = disabled ? "bg-gray-400" : "bg-gray-200";
 
   return (
     <div className="flex flex-col md:my-1 md:p-2  ">
