@@ -48,9 +48,9 @@ export function useUsuario() {
     }
   }
 
-  async function updateUsuario(id, data) {
+  async function updateUsuario(data) {
     try {
-      const retorno = await serviceUsuario.updateUsuario(id, data);
+      const retorno = await serviceUsuario.updateUsuario(data);
       return retorno;
     } catch (erro) {
       throw Error(erro.message);

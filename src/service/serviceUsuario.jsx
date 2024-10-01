@@ -20,10 +20,11 @@ export async function addUsuario(data) {
   }
 }
 
-export async function updateUsuario(id, data) {
+export async function updateUsuario(data) {
   try {
     debugger;
-    var retorno = await _put("/usuario/${id}", data);
+    var retorno = await _put("/usuario", data);
+    debugger;
     return retorno;
   } catch (erro) {
     throw erro;
