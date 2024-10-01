@@ -252,7 +252,7 @@ export default function ClientesPage({ handleLogout }) {
 
   function dadosValidos() {
     setValidado(true);
-
+    debugger;
     return (
       nome.trim().length > 5 &&
       email.trim().length > 5 &&
@@ -459,9 +459,10 @@ export default function ClientesPage({ handleLogout }) {
                     onInputChange={(valor) => setBairro(valor)}
                     validado={validado}
                     maxLength={50}
-                    disabled={false}
+                    disabled={true}
                     allowNull={true}
                     className="rounded-md border p-2 text-black bg-gray-400"
+                    key={key}
                   />
                 </div>
                 <div className="flex-1 text-left">
@@ -473,6 +474,7 @@ export default function ClientesPage({ handleLogout }) {
                     maxLength={50}
                     disabled={true}
                     allowNull={true}
+                    key={key}
                   />
                 </div>
                 <div className="col-span-1">
@@ -484,6 +486,7 @@ export default function ClientesPage({ handleLogout }) {
                     maxLength={50}
                     disabled={true}
                     allowNull={true}
+                    key={key}
                   />
                 </div>
               </div>
