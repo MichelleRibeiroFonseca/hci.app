@@ -70,13 +70,15 @@ export default function UsuariosPage({ handleLogout }) {
     try {
       setIsProcessing(true);
 
+      let listaUsuarios; // Variável para armazenar os dados temporariamente
+
       if (nomeFiltro === "") {
-        listaUsuarioFiltro = await getAll(); // Chama getAll para pegar todos os usuários
+        listaUsuarios = await getAll(); // Chama getAll para pegar todos os usuários
       } else {
-        listaUsuarioFiltro = await getUsuarioByNome(nomeFiltro); // Chama getUsuarioByNome
+        listaUsuarios = await getUsuarioByNome(nomeFiltro); // Chama getUsuarioByNome
       }
 
-      setListaUsuarios(listaUsuarioFiltro);
+      setListaUsuarios(listaUsuarios); // Usa o setter para atualizar o estado corretamente
       setKey((prevKey) => prevKey + 1);
     } catch (erro) {
       setErroGeral(erro.message);
