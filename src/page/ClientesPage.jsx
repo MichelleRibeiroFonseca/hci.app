@@ -220,6 +220,7 @@ export default function ClientesPage({ handleLogout }) {
       }
     } else setIsProcessing(false);
     setValidado(true);
+    setNomeFiltro("");
   }
   function handleCancelar() {
     setOpenModal(false);
