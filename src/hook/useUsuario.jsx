@@ -48,6 +48,15 @@ export function useUsuario() {
     }
   }
 
+  async function updateUsuario(id, data) {
+    try {
+      const retorno = await serviceUsuario.updateUsuario(id, data);
+      return retorno;
+    } catch (erro) {
+      throw Error(erro.message);
+    }
+  }
+
   async function deleteUsuario(id_usuario) {
     try {
       const retorno = await serviceUsuario.deleteUsuario(id_usuario);
@@ -78,5 +87,6 @@ export function useUsuario() {
     validarLogins,
     deleteUsuario,
     getByDescricao,
+    updateUsuario,
   };
 }

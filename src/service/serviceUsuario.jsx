@@ -20,6 +20,16 @@ export async function addUsuario(data) {
   }
 }
 
+export async function updateUsuario(id, data) {
+  try {
+    debugger;
+    var retorno = await _put("/usuario/${id}", data);
+    return retorno;
+  } catch (erro) {
+    throw erro;
+  }
+}
+
 export async function getAll() {
   try {
     debugger;

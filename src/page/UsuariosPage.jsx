@@ -15,7 +15,11 @@ import {
   MdSchedule,
   MdOutlinePassword,
 } from "react-icons/md";
-import { deleteUsuario, getUsuarioByNome } from "../service/serviceUsuario";
+import {
+  deleteUsuario,
+  getUsuarioByNome,
+  updateUsuario,
+} from "../service/serviceUsuario";
 
 export default function UsuariosPage({ handleLogout }) {
   const { getAll, addUsuario, deleteUsuario } = useUsuario();
@@ -39,6 +43,7 @@ export default function UsuariosPage({ handleLogout }) {
   const [isOpenMensagem, setIsOpenMensagem] = useState(false);
   const [listaUsuarioFiltro, setListaUsuario] = useState([]);
   function handleItemClick(index) {
+    debugger;
     const itemSelected = listaUsuario[index];
     limparDados();
 
@@ -118,13 +123,13 @@ export default function UsuariosPage({ handleLogout }) {
       };
       try {
         debugger;
-        // if (idUsuario > 0) {
-        //   const retorno = await updateCliente(cliente);
-        //   processaRetorno(retorno);
-        // } else {
-        const retorno = await addUsuario(cliente);
-        processaRetorno(retorno);
-        // }
+        if (idUsuario > 0) {
+          const retorno = await updateUsuario(idUsuario, cliente);
+          processaRetorno(retorno);
+        } else {
+          const retorno = await addUsuario(cliente);
+          processaRetorno(retorno);
+        }
       } catch (erro) {
         setIsProcessing(false);
 
