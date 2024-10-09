@@ -61,7 +61,7 @@ export default function OrcamentosPage({ handleLogout }) {
         produto['id'] = produto.id_produto;
         produto[
           'label'
-        ] = `${produto.descricao} - ${produto.unidade} - ${produto.dimensao}`;
+        ] = `${produto.descricao} - ${produto.unidade} - ${produto.altura} X ${produto.largura} X ${produto.comprimento} `;
       });
       setListaProdutos(listaProdutos);
     };
@@ -356,6 +356,9 @@ export default function OrcamentosPage({ handleLogout }) {
       id_produto: 0,
       descricao: '',
       dimensao: '',
+      altura: '',
+      largura: '',
+      comprimento: '',
       unidade: '',
       quantidade: 0,
       valor_unitario: 0,
@@ -527,20 +530,14 @@ export default function OrcamentosPage({ handleLogout }) {
 
               <div className="w-full">
                 <div className="grid grid-cols-10">
-                  <div className=" col-span-6">
-                    <p className="text-sm">Produto</p>
+                  <div className=" col-span-6 pl-10 font-bold text-left">
+                    Produto - Un - Alt x Larg x Comp
                   </div>
-                  <div className="">
-                    <p className="text-sm">Quantidade</p>
-                  </div>
-                  <div className="">
-                    <p className="text-sm">Valor Unitário</p>
-                  </div>
+                  <div className="font-bold text-center">QTDE</div>
+                  <div className="font-bold text-right">Valor Unitário</div>
 
-                  <div className="">
-                    <p className="text-sm">Total</p>
-                  </div>
-                  <div className="">
+                  <div className="font-bold text-center">Total</div>
+                  <div className="font-bold">
                     <p className="text-sm"></p>
                   </div>
                 </div>
@@ -556,7 +553,7 @@ export default function OrcamentosPage({ handleLogout }) {
                           <div className=" col-span-6">
                             <TextAutocomplete
                               lista={listaProdutos}
-                              inputValue={`${item.descricao} - ${item.unidade} - ${item.dimensao}`}
+                              inputValue={`${item.descricao} - ${item.unidade} - ${item.altura} X ${item.largura} X ${item.comprimento} `}
                               onInputChange={value =>
                                 onHandleProduto(index, value)
                               }
@@ -574,14 +571,12 @@ export default function OrcamentosPage({ handleLogout }) {
                             ></TextInput>
                           </div>
 
-                          <div className="text-sm">
+                          <div className="text-sm text-right">
                             {maskValor(item.valor_unitario.toString())}
                           </div>
 
-                          <div className=" ">
-                            <p className="text-sm">
-                              {maskValor(item.total.toString())}
-                            </p>
+                          <div className="text-sm text-right">
+                            {maskValor(item.total.toString())}
                           </div>
 
                           <div className=" ">
