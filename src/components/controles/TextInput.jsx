@@ -1,6 +1,11 @@
 // import { getNewId } from "../../services/idService";
 import { useState } from "react";
-import { maskCPF, maskCEP, maskCelular, maskValor } from "../../Util/mascara";
+import {
+  maskCPFCNPJ,
+  maskCEP,
+  maskCelular,
+  maskValor,
+} from "../../Util/mascara";
 
 export default function TextInput({
   labelDescription = "Descrição do Label",
@@ -38,7 +43,7 @@ export default function TextInput({
 
     // Aplicar as outras máscaras
     if (isCPF) {
-      newValue = maskCPF(newValue);
+      newValue = maskCPFCNPJ(newValue);
     }
     if (isCEP) {
       newValue = maskCEP(newValue);

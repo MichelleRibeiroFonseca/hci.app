@@ -9,6 +9,7 @@ import Error from "../components/telas/Error";
 import Sucesso from "../components/telas/Sucesso";
 import Loading from "../components/telas/Loading";
 import Mensagem from "../components/telas/Mensagem";
+import SelectInput from "../components/controles/SelectInput";
 import {
   MdArrowBackIos,
   MdSave,
@@ -37,7 +38,9 @@ export default function ProdutosPage({ handleLogout }) {
   const [quantidade, setQuantidade] = useState("");
   const [unidade, setUnidade] = useState("");
   const [ean, setEan] = useState("");
-  const [dimensao, setDimensao] = useState("");
+  const [altura, setAltura] = useState("");
+  const [largura, setLargura] = useState("");
+  const [comprimento, setComprimento] = useState("");
   const [peso, setPeso] = useState("");
   const [idProduto, setIdProduto] = useState(0);
   const [validado, setValidado] = useState(false);
@@ -57,7 +60,9 @@ export default function ProdutosPage({ handleLogout }) {
     setFornecedor(itemSelected.fornecedor);
     setQuantidade(itemSelected.quantidade);
     setUnidade(itemSelected.unidade);
-    setDimensao(itemSelected.dimensao);
+    setAltura(itemSelected.altura);
+    setLargura(itemSelected.largura);
+    setComprimento(itemSelected.comprimento);
     setPeso(itemSelected.peso);
     setEan(itemSelected.ean);
     setIdProduto(itemSelected.id_produto);
@@ -124,7 +129,9 @@ export default function ProdutosPage({ handleLogout }) {
     setFornecedor("");
     setQuantidade("");
     setUnidade("");
-    setDimensao("");
+    setAltura("");
+    setLargura("");
+    setComprimento("");
     setPeso("");
     setEan("");
     setIdProduto(0);
@@ -155,13 +162,16 @@ export default function ProdutosPage({ handleLogout }) {
         fornecedor: fornecedor,
         quantidade: quantidade,
         unidade: unidade,
-        dimensao: dimensao,
+        altura: altura,
+        comprimento: comprimento,
+        largura: largura,
         peso: peso,
         ean: ean,
         id_produto: idProduto,
       };
       try {
         if (idProduto > 0) {
+          debugger;
           const retorno = await updateProduto(produto);
           processaRetorno(retorno);
         } else {
@@ -387,7 +397,7 @@ export default function ProdutosPage({ handleLogout }) {
                   />
                 </div>
 
-                <div className="col-span-1">
+                {/* <div className="col-span-1">
                   <TextInput
                     labelDescription="Unidade"
                     inputValue={unidade}
@@ -396,22 +406,53 @@ export default function ProdutosPage({ handleLogout }) {
                     maxLength={250}
                     allowNull={false}
                   />
-                </div>
+                </div> */}
+                <SelectInput
+                  labelDescription="Unidade"
+                  inputValue={unidade}
+                  onInputChange={(valor) => setUnidade(valor)}
+                >
+                  <option value="">Selecione uma unidade</option>
+                  <option value="peso">Peso</option>
+                  <option value="caixa">Caixa</option>
+                  <option value="metro-linear">Metro Linear</option>
+                </SelectInput>
 
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="DIMENSÕES (alt X larg X comp em .cm)"
+                    labelDescription="Altura"
                     //placeholder="Alt X Larg X Comp"
-                    inputValue={dimensao}
-                    onInputChange={(valor) => setDimensao(valor)}
+                    inputValue={altura}
+                    onInputChange={(valor) => setAltura(valor)}
                     validado={validado}
-                    maxLength={150}
+                    maxLength={10}
                     disabled={false}
                     allowNull={false}
-                    //title="Digite as dimensões em centímetros"
                   />
                 </div>
-                <div className="w-32 text-left">
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Largura"
+                    inputValue={largura}
+                    onInputChange={(valor) => setLargura(valor)}
+                    validado={validado}
+                    maxLength={10}
+                    disabled={false}
+                    allowNull={false}
+                  />
+                </div>
+                <div className="col-span-1">
+                  <TextInput
+                    labelDescription="Comprimento"
+                    inputValue={comprimento}
+                    onInputChange={(valor) => setComprimento(valor)}
+                    validado={validado}
+                    maxLength={10}
+                    disabled={false}
+                    allowNull={false}
+                  />
+                </div>
+                <div className="col-span-1">
                   <TextInput
                     labelDescription="PESO (KG)"
                     inputValue={peso}
@@ -419,8 +460,6 @@ export default function ProdutosPage({ handleLogout }) {
                     validado={validado}
                     maxLength={15}
                     allowNull={false}
-                    //title="Digite em KG"
-                    //placeholder="KG"
                   />
                 </div>
                 <div className="col-span-1">

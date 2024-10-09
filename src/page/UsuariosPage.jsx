@@ -122,7 +122,6 @@ export default function UsuariosPage({ handleLogout }) {
         //idUsuario: idUsuario,
       };
       try {
-        debugger;
         if (idUsuario > 0) {
           const usuUpdate = {
             nome_usuario: nome,

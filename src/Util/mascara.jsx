@@ -1,11 +1,31 @@
-export const maskCPF = (v) => {
-  v = v.replace(/\D/g, "");
+// export const maskCPF = (v) => {
+//   v = v.replace(/\D/g, "");
 
+//   if (v.length <= 11) {
+//     v = v.replace(/(\d{3})(\d)/, "$1.$2");
+//     v = v.replace(/(\d{3})(\d)/, "$1.$2");
+//     v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+//   }
+//   return v;
+// };
+
+export const maskCPFCNPJ = (v) => {
+  v = v.replace(/\D/g, ""); // Remove qualquer caractere que não seja número
+
+  // Máscara para CPF (11 dígitos)
   if (v.length <= 11) {
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+    // Máscara para CNPJ (14 dígitos)
+  } else if (v.length <= 14) {
+    v = v.replace(/(\d{2})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1/$2");
+    v = v.replace(/(\d{4})(\d{1,2})$/, "$1-$2");
   }
+
   return v;
 };
 

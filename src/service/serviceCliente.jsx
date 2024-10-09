@@ -76,6 +76,7 @@ export async function excluirCliente(id_cliente) {
   try {
     debugger;
     var retorno = await _delete(`/cliente/${id_cliente}`);
+    debugger;
     retorno = { sucesso: true, mensagem: "Excluído com sucesso" };
     return retorno;
   } catch (erro) {

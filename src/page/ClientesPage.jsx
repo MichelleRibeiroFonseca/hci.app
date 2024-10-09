@@ -213,10 +213,11 @@ export default function ClientesPage({ handleLogout }) {
           const retorno = await addCliente(cliente);
           processaRetorno(retorno);
         }
+        setNomeFiltro("");
       } catch (erro) {
         setIsProcessing(false);
-
         setErroMensage(erro.message);
+        setNomeFiltro("");
       }
     } else setIsProcessing(false);
     setValidado(true);
@@ -283,10 +284,20 @@ export default function ClientesPage({ handleLogout }) {
 
     // Verifica o CPF
     if (cpf != "") {
-      if (cpf.trim().length !== 14) {
-        message = "O CPF deve ter exatamente 14 caracteres.";
-        setErroMensage(message);
-        setValidado(false);
+      const cleanValue = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+      if (cleanValue.length === 11) {
+        if (!validarCPF(cleanValue)) {
+          setErroMensage("CPF inválido");
+          return false;
+        }
+      } else if (cleanValue.length === 14) {
+        if (!validarCNPJ(cleanValue)) {
+          setErroMensage("CNPJ inválido");
+          return false;
+        }
+      } else {
+        setErroMensage("CPF ou CNPJ inválido");
         return false;
       }
     }
@@ -302,6 +313,66 @@ export default function ClientesPage({ handleLogout }) {
     }
 
     // Se passar por todas as validações, retorna true
+    return true;
+  }
+
+  function validarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; // Verifica tamanho e repetição de dígitos
+
+    let soma = 0;
+    let resto;
+
+    // Validação do primeiro dígito verificador
+    for (let i = 1; i <= 9; i++)
+      soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;
+
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 1; i <= 10; i++)
+      soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
+
+    return true;
+  }
+
+  function validarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+    if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false; // Verifica tamanho e repetição de dígitos
+
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+
+    // Validação do primeiro dígito verificador
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitos.charAt(0))) return false;
+
+    // Validação do segundo dígito verificador
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitos.charAt(1))) return false;
+
     return true;
   }
 
@@ -415,12 +486,12 @@ export default function ClientesPage({ handleLogout }) {
 
                 <div className="col-span-1">
                   <TextInput
-                    labelDescription="CPF"
+                    labelDescription="CPF/CNPJ"
                     isCPF={true}
                     inputValue={cpf}
                     onInputChange={(valor) => setCpf(valor)}
                     validado={validado}
-                    maxLength={14}
+                    maxLength={20}
                     allowNull={true}
                   />
                 </div>

@@ -27,6 +27,7 @@ export function useProduto() {
 
   async function updateProduto(produto) {
     try {
+      debugger;
       const retorno = await serviceProduto.updateProduto(produto);
       return retorno;
     } catch (erro) {
