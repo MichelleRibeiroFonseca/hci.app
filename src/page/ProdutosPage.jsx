@@ -145,6 +145,7 @@ export default function ProdutosPage({ handleLogout }) {
     handleBuscar();
   }
   async function handleSalvar() {
+    debugger;
     const valorVendaSalvar = parseFloat(
       valorVenda.replace("R$ ", "").replace(".", "").replace(",", ".")
     );
@@ -413,9 +414,10 @@ export default function ProdutosPage({ handleLogout }) {
                   onInputChange={(valor) => setUnidade(valor)}
                 >
                   <option value="">Selecione uma unidade</option>
-                  <option value="peso">Peso</option>
+                  <option value="peso">Peça </option>
                   <option value="caixa">Caixa</option>
                   <option value="metro-linear">Metro Linear</option>
+                  <option value="metro-linear">Metro quadrado</option>
                 </SelectInput>
 
                 <div className="col-span-1">
