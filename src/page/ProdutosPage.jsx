@@ -414,10 +414,10 @@ export default function ProdutosPage({ handleLogout }) {
                   onInputChange={(valor) => setUnidade(valor)}
                 >
                   <option value="">Selecione uma unidade</option>
-                  <option value="peso">Peça </option>
+                  <option value="peca">Peça </option>
                   <option value="caixa">Caixa</option>
                   <option value="metro-linear">Metro Linear</option>
-                  <option value="metro-linear">Metro quadrado</option>
+                  <option value="metro-quadrado">Metro Quadrado</option>
                 </SelectInput>
 
                 <div className="col-span-1">
